@@ -1,15 +1,106 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import java.util.Scanner;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+public class Main {
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        showWelcomeScreen();
+        mainMenuLoop();
+        System.out.println("Program terminated.");
     }
+
+    // WELCOME SCREEN FOR PROJECT
+
+
+
+    // MAIN MENU
+    public static void mainMenuLoop() {
+        while (true) {
+            System.out.println("\nMAIN MENU");
+            System.out.println("1-) Primary School [A]");
+            System.out.println("2-) Secondary School [B]");
+            System.out.println("3-) High School [C]");
+            System.out.println("4-) University [D]");
+            System.out.println("5-) Exit [E]");
+
+            System.out.print("Choose an option: ");
+            String choice = scanner.nextLine().toUpperCase();
+
+            // Checking for input
+            switch (userChoice) {
+                case 1:
+                    System.out.println("\n-> Option A - Primary School menu is opening...");
+                    subMenuOptionA(input);
+                    break;
+
+                case 2:
+                    System.out.println("\n-> Option B Selected- Secondary School menu is opening...");
+                    subMenuOptionB(input);
+                    break;
+
+                case 3:
+                    System.out.println("\n-> Option C - High School menu is opening...");
+                    subMenuOptionC(input);
+                    break;
+
+                case 4:
+                    System.out.println("\n-> Option D - University menu is opening...");
+                    subMenuOptionD(input); // Connect Four menu burada olabilir
+                    break;
+
+                case 5:
+                    // Programdan çıkış yapılacak, do-while dışına düşecek
+                    break;
+
+                default:
+                    System.out.println("\n❌ Invalid selection! Please choose a number between 1 and 5.\n");
+                    break;
+            }
+            }
+        }
+
+
+    // ===========================================
+    //           OPTION A - PRIMARY SCHOOL
+    // ===========================================
+
+    // Option A Submenu
+
+    // Shows submenu for Option A
+    private static void subMenuOptionA(Scanner input) {}
+
+    // Option A Task 1: Age and Zodiac Sign Detection Main Code
+    private static void ageAndZodiacSignDetection() {}
+
+    // Option A Task 2: Reverse the Words Main Code
+    private static void reverseTheWords() {}
+
+
+    // ===========================================
+    //         OPTION B - SECONDARY SCHOOL
+    // ===========================================
+
+    // Option B Submenu
+    private static void subMenuOptionB() {}
+
+
+    // ===========================================
+    //             OPTION C - HIGH SCHOOL
+    // ===========================================
+
+    // Option C Submenu
+    private static void subMenuOptionC() {}
+
+    // Option C Task 1: Array Statistics Main Code
+    private static void arrayStatisticsTask() {}
+
+    // Option C Task C2: Distance Between Two Arrays Main Code
+    private static void arrayDistanceTask() {}
+
+    // ===========================================
+    //             OPTION D - UNIVERSITY
+    // ===========================================
+
+    // Connect Four Game Main Code
+    private static void connectFourGame() {}
 }
