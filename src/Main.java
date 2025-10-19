@@ -11,7 +11,23 @@ public class Main {
 
     // WELCOME SCREEN FOR PROJECT
 
+    public static void showWelcomeScreen() {
+        System.out.println("\n\n" +
+                "█       █▄     ▄████████  ▄█        ▄████████  ▄██████▄    ▄▄▄▄███▄▄▄▄      ▄████████ \n" +
+                "███     ███   ███    ███ ███       ███    ███ ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███ \n" +
+                "███     ███   ███    █▀  ███       ███    █▀  ███    ███ ███   ███   ███   ███    █▀  \n" +
+                "███     ███  ▄███▄▄▄     ███       ███        ███    ███ ███   ███   ███  ▄███▄▄▄     \n" +
+                "███     ███ ▀▀███▀▀▀     ███       ███        ███    ███ ███   ███   ███ ▀▀███▀▀▀     \n" +
+                "███     ███   ███    █▄  ███       ███    █▄  ███    ███ ███   ███   ███   ███    █▄  \n" +
+                "███ ▄█▄ ███   ███    ███ ███▌    ▄ ███    ███ ███    ███ ███   ███   ███   ███    ███ \n" +
+                " ▀███▀███▀    ██████████ █████▄▄██ ████████▀   ▀██████▀   ▀█   ███   █▀    ██████████ \n" +
+                "                         ▀                                                           \n");
 
+        System.out.println("WELCOME TO THE JAVA CONSOLE PROJECT!");
+        System.out.println("Team Members: Eren, Selçuk, Arda and Zafer");
+        System.out.println("Press ENTER to continue to Project...");
+        scanner.nextLine();
+    }
 
     // MAIN MENU
     public static void mainMenuLoop() {
