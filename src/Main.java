@@ -89,7 +89,87 @@ public class Main {
     private static void ageAndZodiacSignDetection() {}
 
     // Option A Task 2: Reverse the Words Main Code
-    private static void reverseTheWords() {}
+    private static void reverseTheWords() {
+        System.out.println("\n--- Task 2: Reverse the Words ---");
+        System.out.println("Please enter the text you want to reverse:");
+
+        String originalText = scanner.nextLine();
+
+        System.out.println("\n--- Orijinal Metin ---");
+        System.out.println(originalText);
+
+        // Özyinelemeli metodu çağırarak metni ters çeviriyoruz.
+        String reversedText = reverseSentenceRecursively(originalText.trim());
+
+        System.out.println("\n--- Ters Çevrilmiş Metin ---");
+        System.out.println(reversedText);
+
+        System.out.println("\nPress ENTER to return to the Primary School menu...");
+        scanner.nextLine();
+    }
+
+    // ReverseWords sınıfında kullanılan fonskiyon 1
+    private static String reverseSentenceRecursively(String sentence) {
+        if (sentence == null || sentence.isEmpty()) {
+            return "";
+        }
+
+        String trimmedSentence = sentence.trim();
+        if (trimmedSentence.isEmpty()) {
+            return "";
+        }
+
+        String firstWord;
+        String restOfSentence;
+
+        int firstSpaceIndex = trimmedSentence.indexOf(' ');
+        if (firstSpaceIndex == -1) {
+            firstWord = trimmedSentence;
+            restOfSentence = "";
+        } else {
+            firstWord = trimmedSentence.substring(0, firstSpaceIndex);
+            restOfSentence = trimmedSentence.substring(firstSpaceIndex + 1);
+        }
+
+        String reversedWord = reverseSingleWord(firstWord);
+        String processedRest = reverseSentenceRecursively(restOfSentence);
+
+        if (processedRest.isEmpty()) {
+            return reversedWord;
+        } else {
+            return reversedWord + " " + processedRest;
+        }
+    }
+
+    // ReverseWords sınıfında kullanılan fonksiyon 2
+    private static String reverseSingleWord(String word) {
+        if (word == null) return null;
+
+        StringBuilder letters = new StringBuilder();
+        for (char c : word.toCharArray()) {
+            if (Character.isLetter(c)) {
+                letters.append(c);
+            }
+        }
+
+        if (letters.length() < 2) {
+            return word;
+        }
+
+        letters.reverse();
+
+        StringBuilder result = new StringBuilder();
+        int letterIndex = 0;
+        for (char c : word.toCharArray()) {
+            if (Character.isLetter(c)) {
+                result.append(letters.charAt(letterIndex));
+                letterIndex++;
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
+    }
 
 
     // ===========================================
