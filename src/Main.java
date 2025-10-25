@@ -52,28 +52,25 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("\n-> Option B Selected- Secondary School menu is opening...");
+                    System.out.println("\n Option B Selected- Secondary School menu is opening...");
                     subMenuOptionB(input);
                     break;
 
                 case 3:
-                    System.out.println("\n-> Option C - High School menu is opening...");
+                    System.out.println("\n Option C - High School menu is opening...");
                     subMenuOptionC(input);
                     break;
 
                 case 4:
-                    System.out.println("\n-> Option D - University menu is opening...");
-                    subMenuOptionD(input); // Connect Four menu burada olabilir
+                    System.out.println("\n Option D - University menu is opening...");
+                    subMenuOptionD(input);
                     break;
-
                 case 5:
-                    // Programdan çıkış yapılacak, do-while dışına düşecek
-                    break;
-
+                    break
                 default:
-                    System.out.println("\n❌ Invalid selection! Please choose a number between 1 and 5.\n");
+                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
                     break;
-            }
+                }
             }
         }
 
@@ -85,7 +82,40 @@ public class Main {
     // Option A Submenu
 
     // Shows submenu for Option A
-    private static void subMenuOptionA(Scanner input) {}
+    private static void subMenuOptionA(Scanner input) {
+        int choice = 0;
+        do {
+            System.out.println("\n=== OPTION A: PRIMARY SCHOOL ===");
+            System.out.println("1-) Age and Zodiac Sign Detection");
+            System.out.println("2-) Reverse the Words (Recursive)");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Your choice: ");
+
+            if (input.hasNextInt()) {
+                choice = input.nextInt();
+                input.nextLine(); // clear buffer
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n Running Task A1...");
+                        ageAndZodiacSignDetection();
+                        break;
+                    case 2:
+                        System.out.println("\n Running Task A2...");
+                        reverseTheWords();
+                        break;
+                    case 3:
+                        System.out.println("Returning to Main Menu...\n");
+                        break;
+                    default:
+                        System.out.println("Please enter a number between 1 and 3.");
+                }
+            } else {
+                System.out.println("❌ Invalid input. Please enter a number.");
+                input.nextLine();
+            }
+
+        } while (choice != 3);
+    }
 
     // Option A Task 1: Age and Zodiac Sign Detection Main Code
     private static void ageAndZodiacSignDetection() {}
@@ -371,7 +401,40 @@ public class Main {
     // ===========================================
 
     // Option B Submenu
-    private static void subMenuOptionB() {}
+    private static void subMenuOptionB() {
+        int choice = 0;
+        do {
+            System.out.println("\n=== OPTION B: SECONDARY SCHOOL ===");
+            System.out.println("1-) Prime Number Generator ");
+            System.out.println("2-) Step-by-step Expression Evaluation");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Your choice: ");
+
+            if (input.hasNextInt()) {
+                choice = input.nextInt();
+                input.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n Running Task B1 ");
+                        CalculatePrimeNumbers();
+                        break;
+                    case 2:
+                        System.out.println("\n Running Task B2");
+                        expressioncontroller();
+                        break;
+                    case 3:
+                        System.out.println("Project Returning to Main Menu...\n");
+                        break;
+                    default:
+                        System.out.println("Please enter a number between 1 and 3.");
+                }
+            } else {
+                System.out.println("❌ Invalid input. Please enter a number.");
+                input.nextLine();
+            }
+
+        } while (choice != 3);
+    }
 
 
     // ===========================================
@@ -379,13 +442,47 @@ public class Main {
     // ===========================================
 
     // Option C Submenu
-    private static void subMenuOptionC() {}
+    private static void subMenuOptionC() {
+        int choice = 0;
+        do {
+            System.out.println("\n=== OPTION C: HIGH SCHOOL ===");
+            System.out.println("1-) Statistical Information about an Array");
+            System.out.println("2-) Distance Between Two Arrays");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Your choice: ");
+
+            if (input.hasNextInt()) {
+                choice = input.nextInt();
+                input.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n Running Task C1...");
+                        arrayStatisticsTask();
+                        break;
+                    case 2:
+                        System.out.println("\n Running Task C2...");
+                        arrayDistanceTask();
+                        break;
+                    case 3:
+                        System.out.println("Returning to Main Menu...\n");
+                        break;
+                    default:
+                        System.out.println("Please enter a number between 1 and 3.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                input.nextLine();
+            }
+
+        } while (choice != 3);
+    }
 
     // Option C Task 1: Array Statistics Main Code
     private static void arrayStatisticsTask() {}
 
     // Option C Task C2: Distance Between Two Arrays Main Code
     private static void arrayDistanceTask() {}
+
 
     // ===========================================
     //             OPTION D - UNIVERSITY
