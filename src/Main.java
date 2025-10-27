@@ -71,22 +71,7 @@ public class Main {
                     // Programdan çıkış yapılacak, do-while dışına düşecek
                     break;
 
-                case 2:
-                    System.out.println("\n Option B Selected- Secondary School menu is opening...");
-                    subMenuOptionB(input);
-                    break;
 
-                case 3:
-                    System.out.println("\n Option C - High School menu is opening...");
-                    subMenuOptionC(input);
-                    break;
-
-                case 4:
-                    System.out.println("\n Option D - University menu is opening...");
-                    subMenuOptionD(input);
-                    break;
-                case 5:
-                    break
                 default:
                     System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
                     break;
@@ -456,14 +441,15 @@ public class Main {
     }
             // --- Character Functions and Priority ---
             private static int takePriority ( char operator){
-                if (operator == '+' || operator == '-') return 1;
+                if (operator == '+' || operator == '-') return 1; // Assigns a precedence level to operators.
                 if (operator == 'x' || operator == ':') return 2;
-                return 0;
+                return 0;  //Other characters return 0.
+
             }
 
             private static boolean isOperator ( char c){
-                return c == '+' || c == '-' || c == 'x' || c == ':';
-            }
+                 return c == '+' || c == '-' || c == 'x' || c == ':';
+            } // It checks the valid operators.
 
             private static boolean isDigit ( char c){
                 return c >= '0' && c <= '9';
@@ -473,16 +459,32 @@ public class Main {
             public static boolean isValidExpression (String expression){
                 if (expression == null || expression.trim().isEmpty()) return false;
 
-                String trimmed = expression.replaceAll(" ", "").replace(',', '.');
+                // Convert commas to periods and remove spaces
+                StringBuilder ns = new StringBuilder();
+                for (int i = 0; i < expression.length(); i++) {
+                    char c = expression.charAt(i);
+                    if (c == ' ') {
+                        continue;
+                    }
+                    else if (c == ',') {
+                        ns.append('.'); // Insert a period instead of a comma
 
+                    } else {
+                        ns.append(c); //Add all other characters
+                    }
+                }
+                String trimmed= ns.toString();
+                // Checks invalid characters
                 for (int i = 0; i < trimmed.length(); i++) {
                     char c = trimmed.charAt(i);
 
-                    if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')')) {
+
+                    if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')' || c == '.')) {
                         return false;
                     }
                 }
 
+                // Parentheses control
                 int balance = 0;
                 for (char c : trimmed.toCharArray()) {
                     if (c == '(') balance++;
@@ -491,19 +493,78 @@ public class Main {
                 }
                 if (balance != 0) return false;
 
-                for (int i = 0; i < trimmed.length() - 1; i++) {
-                    if (isOperator(trimmed.charAt(i)) && isOperator(trimmed.charAt(i + 1))) {
-                        if (trimmed.charAt(i) != '-' || trimmed.charAt(i + 1) != '-') {
 
-                        } else if (i != 0 && trimmed.charAt(i - 1) != '(') {
+                if (trimmed.length() > 0) {
+                    char firstChar = trimmed.charAt(0);
+
+
+                    if (firstChar == '+' || firstChar == 'x' || firstChar == ':') {
+                        return false;
+                    }
+
+                    // The end of the expression cannot be an operator
+                    char lastChar = trimmed.charAt(trimmed.length() - 1);
+                    if (isOperator(lastChar)) {
+                        return false;
+                    }
+                }
+
+                //  Operator and Operand order (Side by side operators in parentheses).
+                for (int i = 0; i < trimmed.length() - 1; i++) {
+                    char current = trimmed.charAt(i);
+                    char next = trimmed.charAt(i + 1);
+
+
+                    if (isOperator(current) && isOperator(next)) {
+
+
+                        if (next != '-') {
+                            // ++, +x, +:, -+, -x, -: will be error.
                             return false;
+                        }
+
+                        if (i > 0 && isDigit(trimmed.charAt(i - 1)) && next == '-') {
+                            return false;
+                        }
+
+                    }
+
+                    //  Number and parentheses control
+
+                    if (isDigit(current) && next == '(') return false;
+                    if (current == ')' && isDigit(next)) return false;
+
+                    //  Parentheses and operator control
+
+                    if (current == '(' && isOperator(next) && next != '-') {
+
+                        return false;
+                    }
+
+
+                    if (isOperator(current) && next == ')') return false;
+
+
+                    if (current == '.') {
+                        if (i == trimmed.length() - 1 || !isDigit(next)) return false;
+                        if (i > 0 && !isDigit(trimmed.charAt(i - 1))) return false;
+
+
+                        int count = 0;
+                        for (int j = 0; j <= i; j++) {
+                            if (isOperator(trimmed.charAt(j)) || trimmed.charAt(j) == '(') {
+                                count = 0;
+                            }
+                            if (trimmed.charAt(j) == '.') {
+                                count++;
+                            }
+                            if (count > 1) return false;
                         }
                     }
                 }
 
                 return true;
             }
-
 
 
     // --- Evaluation ---
@@ -556,8 +617,22 @@ public class Main {
             double innerResult = recursiveSolve(innerExpression);
 
 
-            String resultStr = String.format("%f", innerResult).replaceAll("(\\.\\d*?)0+$", "$1").replaceAll("\\.$", "");
+            String resultStr = String.format("%.2f", innerResult);
 
+            int endIndex = resultStr.length() - 1; //Removing unnecessary zeros from the last part.
+
+            //Skip all trailing zeros
+
+            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
+                endIndex--;
+            }
+
+            //Truncate the string by length.
+            resultStr = resultStr.substring(0, endIndex + 1);
+            //If the string ends with a dot, remove it.
+            if (resultStr.endsWith(".")) {
+                resultStr = resultStr.substring(0, resultStr.length() - 1);
+            }
 
             String newExpression = expression.substring(0, OpenParent) +
                     resultStr +
@@ -617,11 +692,17 @@ public class Main {
             }
 
 
-            String resultStr = String.format("%.10f", result)
-                    .replaceAll("(\\.\\d*?)0+$", "$1")
-                    .replaceAll("\\.$", "");
+            String resultStr = String.format("%.2f", result);
+            int endIndex = resultStr.length() - 1;
 
-
+            // It will skip the zeros at the end.
+            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
+                endIndex--;
+            }
+            resultStr = resultStr.substring(0, endIndex + 1);
+            if (resultStr.endsWith(".")) {
+                resultStr = resultStr.substring(0, resultStr.length() - 1);
+            }
 
 
             if (expression.equals(leftPart + operator + rightPart)) {
@@ -671,24 +752,38 @@ public class Main {
                         try {
                             System.out.println("\n-- Solution with step by step --\n");
 
-                            // Virgülleri noktaya çevirerek ifadeyi evaluate etmek için hazırlayın.
-                            String processedInput = input.replaceAll(" ", "").replace(',', '.');
-                            double finalResult = evaluateAndPrintSteps(processedInput);
+                            // Prepares the expression for evaluation by converting commas to periods.
+                            char[] tempChars = input.toCharArray();
+                            int newLength = 0;
+                            for (int i = 0; i < input.length(); i++) {
+                                char c = input.charAt(i);
+                                if (c == ' ') {
+                                    continue;
+                                }
+                                else if (c == ',') {
+                                    tempChars[newLength] = '.';
+                                    newLength++;
+                                }
+                                else {
+                                    tempChars[newLength] = c;
+                                    newLength++;
+                                }
+                            }
+                            String processedInput = new String(tempChars,0, newLength);
 
+                            double finalResult = evaluateAndPrintSteps(processedInput);
                             System.out.printf("Final result = %.2f%n", finalResult);
-                            System.out.println("\n--- END  ---\n");
+                            System.out.println("\n--- END(ENTER `EXIT TO RETURN MAIN MENU`  ---\n");
                         } catch (IllegalArgumentException e) {
-                            System.out.println("retry to enter valid expression. (" + e.getMessage() + ")");
+                            System.out.println("retry to enter valid expression.`Exit`for return menu (" + e.getMessage() + ")");
                         } catch (Exception e) {
-                            System.out.println("retry to enter valid expression. (Unexpected error)");
+                            System.out.println("retry to enter valid expression. (Unexpected error) `Exit`for return menu");
                         }
                     } else {
-                        System.out.println("retry to enter valid expression.");
+                        System.out.println("retry to enter valid expression.`Exit`for return menu");
                     }
                 }
             }
-
-
 
 
         // ===========================================
