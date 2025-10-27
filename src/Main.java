@@ -1272,7 +1272,7 @@ private static void arrayDistanceTask()
                 element = -1;
                 isValid = false;
             }
-        } while (!isValid);
+        } while (!isValid );
     }
 
     scanner.nextLine();
