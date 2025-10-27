@@ -514,12 +514,10 @@ public class Main
 
         do {
             System.out.print("Please enter an integer n (n >= 12): ");
-            // Global (statik) scanner nesnesini kullanıyoruz.
             if (scanner.hasNextInt())
             {
                 n = scanner.nextInt();
-                // nextInt() sonrası satır sonu karakterini tüketmek için
-                scanner.nextLine();
+                scanner.nextLine(); // buffer temizle
 
                 if (n < 12)
                 {
@@ -529,10 +527,8 @@ public class Main
             else
             {
                 System.out.println("Invalid input. Please enter an integer.");
-                // Hatalı girdiyi tarayıcıdan (buffer'dan) temizle
                 scanner.next();
-                // next() sonrası satır sonu karakterini tüketmek için
-                scanner.nextLine();
+                scanner.nextLine(); // buffer temizle
                 n = 0;
             }
         }
@@ -541,9 +537,11 @@ public class Main
         SieveOfEratosthenes(n);
         SieveOfSundaram(n);
         SieveOfAtkin(n);
+
+        System.out.println("\nPress ENTER to return to the Secondary School menu...");
+        scanner.nextLine();
     }
 
-    // Sieve of Eratosthenes metodu
     public static void SieveOfEratosthenes(int n)
     {
         long startTime = System.nanoTime();
@@ -575,25 +573,23 @@ public class Main
         int size = primeNumbers.size();
 
         System.out.println("1. Sieve of Eratosthenes");
-        // n>=12 olduğu için size>=5 garanti, direkt erişim güvenli
         System.out.println("First 3 primes: " + primeNumbers.get(0) +  ", " + primeNumbers.get(1)+  ", " + primeNumbers.get(2));
         System.out.println("Last 2 primes: " + primeNumbers.get(size -2) +  ", " + primeNumbers.get(size-1));
         System.out.printf("Execution time(s): %.9f\n", duration);
         System.out.println(" ");
     }
 
-    // Sieve of Sundaram metodu
     public static void SieveOfSundaram(int n)
     {
         long startTime = System.nanoTime();
         int k = (n-1)/2;
 
         boolean[] isNotPrime = new boolean[k+1];
-        for (int i= 1; i<= k; i++)
+        for (int i = 1; i <= k; i++)
         {
-            for (int j = i; (i+j+2*i*j) <= k; j++)
+            for (int j = i; (i + j + 2 * i * j) <= k; j++)
             {
-                isNotPrime[i+j+2*i* j] = true;
+                isNotPrime[i + j + 2 * i * j] = true;
             }
         }
         ArrayList<Integer> primeNumbers = new ArrayList<>();
@@ -623,13 +619,11 @@ public class Main
         System.out.println(" ");
     }
 
-    // Sieve of Atkin metodu
     public static void SieveOfAtkin(int n)
     {
         long startTime = System.nanoTime();
         boolean[] sieve = new boolean[n+1];
 
-        // n>=12 olduğu için 2 ve 3 kontrolü mantıklı
         if(n>=2)
         {
             sieve[2] = true;
@@ -640,26 +634,22 @@ public class Main
         }
         int limit = (int) Math.sqrt(n);
 
-        // 1. Aşama: Olası asalları işaretle
         for (int x = 1; x <= limit; x++)
         {
             for (int y = 1; y <= limit; y++)
             {
                 int num;
 
-                // 4x^2 + y^2
                 num = (4 * x * x) + (y * y);
                 if (num <= n && (num % 12 == 1 || num % 12 == 5)) {
                     sieve[num] = !sieve[num];
                 }
 
-                // 3x^2 + y^2
                 num = (3 * x * x) + (y * y);
                 if (num <= n && (num % 12 == 7)) {
                     sieve[num] = !sieve[num];
                 }
 
-                // 3x^2 - y^2 (x > y ise)
                 if (x > y) {
                     num = (3 * x * x) - (y * y);
                     if (num <= n && (num % 12 == 11)) {
@@ -669,7 +659,6 @@ public class Main
             }
         }
 
-        // 2. Aşama: Karelerin katlarını ele (Compositelere bak)
         for (int r = 5; r * r <= n; r++)
         {
             if (sieve[r])
@@ -681,7 +670,6 @@ public class Main
             }
         }
 
-        // 3. Aşama: Sonuçları topla
         ArrayList<Integer> primeNumbers= new ArrayList<>();
         for (int i = 2; i <= n; i++)
         {
@@ -987,8 +975,154 @@ private static void arrayStatisticsTask () {
 }
 
 // Option C Task C2: Distance Between Two Arrays Main Code
-private static void arrayDistanceTask () {
+private static void arrayDistanceTask()
+{
+    int size = 0;
+
+    do {
+        System.out.print("Enter the size for the arrays (e.g., 5): ");
+        if (scanner.hasNextInt()) {
+            size = scanner.nextInt();
+            if (size <= 0)
+            {
+                System.out.println("Dimension must be a positive number. Please try again.");
+            }
+        }
+        else
+        {
+            System.out.println("Invalid input. Please enter an integer.");
+            scanner.next();
+            size = 0;
+        }
+    } while (size <= 0);
+
+    scanner.nextLine();
+
+    int[] array1 = new int[size];
+    int[] array2 = new int[size];
+
+    System.out.println("\n--- Enter elements for the first array in [0,9] ---");
+    for (int i = 0; i < size; i++) {
+        int element;
+        boolean isValid;
+
+        do {
+            System.out.print("Enter element at index " + i + " (must be 0-9): ");
+            if (scanner.hasNextInt()) {
+                element = scanner.nextInt();
+                if (element >= 0 && element <= 9)
+                {
+                    array1[i] = element;
+                    isValid = true;
+                }
+                else
+                {
+                    System.out.println("Invalid entry. Number must be between 0 and 9.");
+                    isValid = false;
+                }
+            }
+            else
+            {
+                System.out.println("Invalid entry. Please enter an integer.");
+                scanner.next();
+                element = -1;
+                isValid = false;
+            }
+        } while (!isValid);
+    }
+
+    scanner.nextLine();
+
+    System.out.println("\n--- Enter elements for the second array ---");
+    for (int i = 0; i < size; i++) {
+        int element;
+        boolean isValid;
+
+        do {
+            System.out.print("Enter element at index " + i + " (must be 0-9): ");
+            if (scanner.hasNextInt()) {
+                element = scanner.nextInt();
+                if (element >= 0 && element <= 9)
+                {
+                    array2[i] = element;
+                    isValid = true;
+                }
+                else
+                {
+                    System.out.println("Invalid entry. Number must be between 0 and 9.");
+                    isValid = false;
+                }
+            }
+            else
+            {
+                System.out.println("Invalid entry. Please enter an integer.");
+                scanner.next();
+                element = -1;
+                isValid = false;
+            }
+        } while (!isValid);
+    }
+
+    scanner.nextLine();
+
+    System.out.println("\nCalculating distances for:");
+    System.out.println("Array 1: " + Arrays.toString(array1));
+    System.out.println("Array 2: " + Arrays.toString(array2));
+
+    double manhattan = calculateManhattanDistance(array1, array2);
+    System.out.printf("Manhattan Distance: %.2\n", manhattan);
+
+    double euclidean = calculateEuclideanDistance(array1, array2);
+    System.out.printf("Euclidean Distance: %.2f\n", euclidean);
+
+    double cosine = calculateCosineSimilarity(array1, array2);
+    System.out.printf("Cosine Similarity: %.2f\n", cosine);
+
+    System.out.println("\nPress ENTER to return to the High School menu...");
+    scanner.nextLine();
 }
+
+    public static double calculateManhattanDistance(int[] a, int[] b)
+    {
+        //|a1-b1|+|a2-b2|+...|an-bn|
+        double sum = 0; //total distance
+        for (int i = 0; i < a.length; i++)
+        {
+            sum += Math.abs(a[i] - b[i]);
+        }
+        return sum;
+    }
+
+    public static double calculateEuclideanDistance(int[] a, int[] b)
+    {
+        //in root, (a1-b2)^2 + (a2-b2)^2 +...(an-bn)^2
+        double sumOfSquares = 0;
+        for (int i = 0; i < a.length; i++) {
+            sumOfSquares += Math.pow(a[i] - b[i], 2);
+        }
+        return Math.sqrt(sumOfSquares);
+    }
+
+    public static double calculateCosineSimilarity(int[] a, int[] b) {
+        //similarity(A,B) = (A.B)/|A|.|B|
+        double Product = 0.0;
+        double valA = 0.0;
+        double valB = 0.0;
+
+        for (int i = 0; i < a.length; i++) {
+            Product += a[i] * b[i];
+            valA += Math.pow(a[i], 2);
+            valB += Math.pow(b[i], 2);
+        }
+
+        valA = Math.sqrt(valA);
+        valB = Math.sqrt(valB);
+
+        if (valA == 0.0 || valB == 0.0) {
+            return 0.0;
+        }
+        return Product / (valA * valB);
+    }
 
 // ===========================================
 //             OPTION D - UNIVERSITY
