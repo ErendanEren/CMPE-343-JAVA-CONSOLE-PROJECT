@@ -71,27 +71,9 @@ public class Main
                     break;
 
                 case "E":
-                    // Programdan çıkış yapılacak, do-while dışına düşecek
-                    break;
-
-                case 2:
-                    System.out.println("\n Option B Selected- Secondary School menu is opening...");
-                    subMenuOptionB(input);
-                    break;
-
-                case 3:
-                    System.out.println("\n Option C - High School menu is opening...");
-                    subMenuOptionC(input);
-                    break;
-
-                case 4:
-                    System.out.println("\n Option D - University menu is opening...");
-                    subMenuOptionD(input);
-                    break;
-                case 5:
                     break
                         default:
-                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
+                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");// Programdan çıkış yapılacak, do-while dışına düşecek
                     break;
             }
         }
