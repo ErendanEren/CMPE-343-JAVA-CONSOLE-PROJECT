@@ -71,7 +71,7 @@ public class Main
                     break;
 
                 case "E":
-                    break
+                    break;
                         default:
                     System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");// Programdan çıkış yapılacak, do-while dışına düşecek
                     break;
