@@ -72,18 +72,9 @@ public class Main
 
                 case "E":
                     break;
-<<<<<<< HEAD
                         default:
                     System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");// Programdan çıkış yapılacak, do-while dışına düşecek
                     break;
-=======
-
-
-                default:
-                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
-                    break;
-                }
->>>>>>> e028092a5bbd21cc09b57f0611172ebb7bc4296d
             }
         }
     }
@@ -1044,8 +1035,6 @@ public class Main
             if (isValidExpression(input)) {
                 try {
                     System.out.println("\n-- Solution with step by step --\n");
-<<<<<<< HEAD
-=======
 
                     // Prepares the expression for evaluation by converting commas to periods.
                     char[] tempChars = input.toCharArray();
@@ -1077,65 +1066,6 @@ public class Main
             } else {
                 System.out.println("retry to enter valid expression.`Exit`for return menu");
             }
-        }
-    }
->>>>>>> e028092a5bbd21cc09b57f0611172ebb7bc4296d
-
-                    // Prepares the expression for evaluation by converting commas to periods.
-                    char[] tempChars = input.toCharArray();
-                    int newLength = 0;
-                    for (int i = 0; i < input.length(); i++) {
-                        char c = input.charAt(i);
-                        if (c == ' ') {
-                            continue;
-                        }
-                        else if (c == ',') {
-                            tempChars[newLength] = '.';
-                            newLength++;
-                        }
-                        else {
-                            tempChars[newLength] = c;
-                            newLength++;
-                        }
-                    }
-                    String processedInput = new String(tempChars,0, newLength);
-
-<<<<<<< HEAD
-                    double finalResult = evaluateAndPrintSteps(processedInput);
-                    System.out.printf("Final result = %.2f%n", finalResult);
-                    System.out.println("\n--- END(ENTER `EXIT TO RETURN MAIN MENU`  ---\n");
-                } catch (IllegalArgumentException e) {
-                    System.out.println("retry to enter valid expression.`Exit`for return menu (" + e.getMessage() + ")");
-                } catch (Exception e) {
-                    System.out.println("retry to enter valid expression. (Unexpected error) `Exit`for return menu");
-                }
-            } else {
-                System.out.println("retry to enter valid expression.`Exit`for return menu");
-            }
-=======
-    // ===========================================
-        //             OPTION C - HIGH SCHOOL
-        // ===========================================
-
-        // Option C Submenu
-        private static void subMenuOptionC () {
-        }
-
-        // Option C Task 1: Array Statistics Main Code
-        private static void arrayStatisticsTask () {
-        }
-
-        // Option C Task C2: Distance Between Two Arrays Main Code
-        private static void arrayDistanceTask () {
-        }
-
-        // ===========================================
-        //             OPTION D - UNIVERSITY
-        // ===========================================
-
-        // Connect Four Game Main Code
-        private static void connectFourGame () {
->>>>>>> e028092a5bbd21cc09b57f0611172ebb7bc4296d
         }
     }
 
