@@ -1,12 +1,15 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Main {
+public class Main
+{
     static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         showWelcomeScreen();
         mainMenuLoop();
         System.out.println("Program terminated.");
@@ -96,11 +99,13 @@ public class Main {
                 switch (choice) {
                     case 1:
                         System.out.println("\n Running Task A1...");
-                        ageAndZodiacSignDetection();
+                        ageAndZodiacSignDetection(input);
                         break;
                     case 2:
                         System.out.println("\n Running Task A2...");
-                        reverseTheWords();
+                        reverseTheWords(
+
+                        );
                         break;
                     case 3:
                         System.out.println("Returning to Main Menu...\n");
@@ -416,7 +421,6 @@ public class Main {
 
         System.out.println("Your zodiac sign is: " + sign);
     }
-}
 
 
 // Option A Task 2: Reverse the Words Main Code
