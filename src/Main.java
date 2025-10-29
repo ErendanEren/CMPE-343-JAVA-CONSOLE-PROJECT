@@ -10,9 +10,105 @@ public class Main
 
     public static void main(String[] args)
     {
+        runMatrixRain(80, 24, 5000, 30);
         showWelcomeScreen();
         mainMenuLoop();
         System.out.println("Program terminated.");
+    }
+
+    // === MATRIX RAIN SABİTLERİ ===
+    static final String ANSI_RESET = "\u001B[0m";
+    static final String ANSI_CLEAR = "\u001B[2J";
+    static final String ANSI_HOME  = "\u001B[H";
+    static final String ANSI_HIDE_CURSOR = "\u001B[?25l";
+    static final String ANSI_SHOW_CURSOR = "\u001B[?25h";
+
+    static final String ANSI_GREEN_DIM    = "\u001B[32m";
+    static final String ANSI_GREEN        = "\u001B[92m";
+    static final String ANSI_GREEN_BRIGHT = "\u001B[97m"; // tepedeki parlayan harf
+
+    static final char[] MATRIX_CHARS = (
+            "01" +
+                    "アイウエオカキクケコサシスセソタチツテト" +
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                    "abcdefghijklmnopqrstuvwxyz" +
+                    "0123456789"
+    ).toCharArray();
+
+    static void runMatrixRain(int width, int height, int durationMs, int fps) {
+        width = Math.max(width, 20);
+        height = Math.max(height, 10);
+        fps = Math.max(fps, 10);
+        long frameTime = 1000L / fps;
+
+        int[] y = new int[width];
+        int[] speed = new int[width];
+        java.util.Random rnd = new java.util.Random();
+
+        for (int c = 0; c < width; c++) {
+            y[c] = rnd.nextInt(height);
+            speed[c] = 1 + rnd.nextInt(3); // 1..3
+        }
+
+        long start = System.currentTimeMillis();
+        StringBuilder sb = new StringBuilder(width * (height + 2));
+
+        System.out.print(ANSI_HIDE_CURSOR);
+        try {
+            while (System.currentTimeMillis() - start < durationMs) {
+                long t0 = System.currentTimeMillis();
+
+                sb.setLength(0);
+                sb.append(ANSI_HOME).append(ANSI_CLEAR);
+
+                char[][] screen = new char[height][width];
+                for (int r = 0; r < height; r++) {
+                    java.util.Arrays.fill(screen[r], ' ');
+                }
+
+                for (int c = 0; c < width; c++) {
+                    int head = y[c];
+                    screen[head % height][c] = MATRIX_CHARS[rnd.nextInt(MATRIX_CHARS.length)];
+                    int tail1 = (head - 1 + height) % height;
+                    int tail2 = (head - 2 + height) % height;
+                    if (screen[tail1][c] == ' ') screen[tail1][c] = MATRIX_CHARS[rnd.nextInt(MATRIX_CHARS.length)];
+                    if (screen[tail2][c] == ' ') screen[tail2][c] = MATRIX_CHARS[rnd.nextInt(MATRIX_CHARS.length)];
+
+                    y[c] = (y[c] + speed[c]) % height;
+                    if (rnd.nextDouble() < 0.02) speed[c] = 1 + rnd.nextInt(3);
+                }
+
+                for (int r = 0; r < height; r++) {
+                    for (int c = 0; c < width; c++) {
+                        char ch = screen[r][c];
+                        if (ch == ' ') {
+                            sb.append(' ');
+                        } else {
+                            boolean isHead = (r == 0 && screen[height-1][c] != ' ')
+                                    || (r > 0 && screen[r-1][c] == ' ');
+                            if (isHead) {
+                                sb.append(ANSI_GREEN_BRIGHT).append(ch).append(ANSI_RESET);
+                            } else if (r % 3 == 0) {
+                                sb.append(ANSI_GREEN).append(ch).append(ANSI_RESET);
+                            } else {
+                                sb.append(ANSI_GREEN_DIM).append(ch).append(ANSI_RESET);
+                            }
+                        }
+                    }
+                    sb.append('\n');
+                }
+
+                System.out.print(sb.toString());
+
+                long dt = System.currentTimeMillis() - t0;
+                if (dt < frameTime) {
+                    try { Thread.sleep(frameTime - dt); } catch (InterruptedException ignored) {}
+                }
+            }
+        } finally {
+            System.out.print(ANSI_HOME + ANSI_CLEAR + ANSI_SHOW_CURSOR);
+            System.out.flush();
+        }
     }
 
     // WELCOME SCREEN FOR PROJECT
@@ -995,6 +1091,465 @@ private static void arrayDistanceTask () {
 // ===========================================
 
 // Connect Four Game Main Code
-private static void connectFourGame () { }
+static char[][] C4_BOARD;
+    static int C4_ROWS, C4_COLS;
+    static char C4_CURRENT;
+    static boolean C4_VS_AI = false;
 
+    /** Player names */
+    static String C4_P1_NAME, C4_P2_NAME;
+
+    /** ANSI colors */
+    static final String C4_RESET = "\u001B[0m";
+    static final String C4_RED   = "\u001B[31m";
+    static final String C4_BLUE  = "\u001B[34m";
+
+    /** Rendering config */
+    static final int    C4_CELL_W = 3;
+    static final String C4_H = "━";
+    static final String C4_V = "┃";
+    static final String C4_EMPTY = " ";
+    static final String C4_DISK  = "●";
+
+    /** Visual color mapping */
+    static String C4_COLOR_X = C4_RED;
+    static String C4_COLOR_O = C4_BLUE;
+
+    private static void connectFourGame() {
+        while (true) {
+            System.out.println("\n--- CONNECT FOUR ---");
+            System.out.println("1-) Play with a Friend");
+            System.out.println("2-) Play with AI");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Choose: ");
+            String ch = scanner.nextLine().trim();
+
+            if (ch.equals("1")) {
+                C4_VS_AI = false;
+                if (c4SetupPVP()) c4RunLoop();
+            } else if (ch.equals("2")) {
+                C4_VS_AI = true;
+                if (c4SetupAI()) c4RunLoop();
+            } else if (ch.equals("3")) {
+                return;
+            } else {
+                System.out.println("❌ Invalid choice.");
+            }
+        }
+    }
+
+    private static boolean c4SetupPVP() {
+        System.out.print("Enter name for Player 1 (X, red ●): ");
+        C4_P1_NAME = scanner.nextLine().trim();
+        if (C4_P1_NAME.isEmpty()) C4_P1_NAME = "Player 1";
+
+        System.out.print("Enter name for Player 2 (O, blue ●): ");
+        C4_P2_NAME = scanner.nextLine().trim();
+        if (C4_P2_NAME.isEmpty()) C4_P2_NAME = "Player 2";
+
+        C4_COLOR_X = C4_RED;
+        C4_COLOR_O = C4_BLUE;
+
+        if (!c4ChooseSizeAndInit()) return false;
+        C4_CURRENT = 'X';
+        System.out.println("\nGame setup complete. " + C4_P1_NAME + " starts!");
+        return true;
+    }
+
+    private static boolean c4SetupAI() {
+        System.out.print("Enter your name: ");
+        C4_P1_NAME = scanner.nextLine().trim();
+        if (C4_P1_NAME.isEmpty()) C4_P1_NAME = "You";
+
+        C4_P2_NAME = "Computer";
+
+        char humanSide = c4AskColorAndAssign();
+
+        if (!c4ChooseSizeAndInit()) return false;
+
+        C4_CURRENT = 'X';
+        if (humanSide == 'X') {
+            System.out.println(C4_P1_NAME + " starts!");
+        } else {
+            System.out.println(C4_P2_NAME + " starts!");
+        }
+
+        c4AI_setSide(humanSide == 'X' ? 'O' : 'X');
+        return true;
+    }
+
+    private static char c4AskColorAndAssign() {
+        while (true) {
+            System.out.print("Choose your color [kirmizi/mavi]: ");
+            String s = scanner.nextLine().trim().toLowerCase();
+
+            if (s.equals("kirmizi") || s.equals("kırmızı") || s.equals("k")) {
+                C4_COLOR_X = C4_RED;
+                C4_COLOR_O = C4_BLUE;
+                System.out.println("You are " + C4_RED + "RED ●" + C4_RESET + " (X). Computer is " + C4_BLUE + "BLUE ●" + C4_RESET + " (O).");
+                return 'X';
+            } else if (s.equals("mavi") || s.equals("m")) {
+                C4_COLOR_X = C4_RED;
+                C4_COLOR_O = C4_BLUE;
+                System.out.println("You are " + C4_BLUE + "BLUE ●" + C4_RESET + " (O). Computer is " + C4_RED + "RED ●" + C4_RESET + " (X).");
+                return 'O';
+            } else {
+                System.out.println("❌ Geçersiz giriş. Lütfen 'kirmizi' veya 'mavi' yaz.");
+            }
+        }
+    }
+
+    private static boolean c4ChooseSizeAndInit() {
+        while (true) {
+            System.out.println("\nSelect Board Size:");
+            System.out.println("1-) 5x4");
+            System.out.println("2-) 6x5");
+            System.out.println("3-) 7x6");
+            System.out.println("4-) Back");
+            System.out.print("Choose: ");
+            String ch = scanner.nextLine().trim();
+
+            if (ch.equals("1")) { C4_ROWS = 5; C4_COLS = 4; break; }
+            else if (ch.equals("2")) { C4_ROWS = 6; C4_COLS = 5; break; }
+            else if (ch.equals("3")) { C4_ROWS = 7; C4_COLS = 6; break; }
+            else if (ch.equals("4")) { return false; }
+            else { System.out.println("❌ Invalid input."); }
+        }
+
+        C4_BOARD = new char[C4_ROWS][C4_COLS];
+        for (int r = 0; r < C4_ROWS; r++) Arrays.fill(C4_BOARD[r], ' ');
+        return true;
+    }
+
+    private static void c4RunLoop() {
+        boolean win = false;
+        int turn = 1, maxTurns = C4_ROWS * C4_COLS;
+
+        while (!win && turn <= maxTurns) {
+            c4PrintBoard();
+
+            int col;
+            if (C4_VS_AI && C4_CURRENT == c4AI_getSide()) {
+                System.out.println(C4_P2_NAME + " is thinking...");
+                col = c4AI_bestMove(C4_BOARD, C4_ROWS, C4_COLS, 3);
+                if (col == -1) break;
+            } else {
+                col = c4GetValidMove();
+            }
+
+            c4Drop(col);
+            win = c4CheckWin(C4_CURRENT);
+
+            if (!win) {
+                C4_CURRENT = (C4_CURRENT == 'X') ? 'O' : 'X';
+                turn++;
+            }
+        }
+
+        c4PrintBoard();
+        if (win) {
+            String name = (!C4_VS_AI)
+                    ? (C4_CURRENT == 'X' ? C4_P1_NAME : C4_P2_NAME)
+                    : (C4_CURRENT == c4AI_getSide() ? C4_P2_NAME : C4_P1_NAME);
+            String color = (C4_CURRENT == 'X') ? C4_COLOR_X : C4_COLOR_O;
+            System.out.println("\n!!! " + color + name + " (" + C4_CURRENT + ") WON! " + C4_RESET + "!!!");
+        } else {
+            System.out.println("\n!!! TIE GAME! (Board is full) !!!");
+        }
+
+        System.out.println("Press ENTER to return to the Connect Four menu...");
+        scanner.nextLine();
+    }
+
+    private static int c4GetValidMove() {
+        while (true) {
+            String name = (C4_CURRENT == 'X') ? C4_P1_NAME : C4_P2_NAME;
+            String color = (C4_CURRENT == 'X') ? C4_COLOR_X : C4_COLOR_O;
+            System.out.print(color + name + " (" + C4_CURRENT + ")" + C4_RESET +
+                    ", choose column (1-" + C4_COLS + "): ");
+
+            if (scanner.hasNextInt()) {
+                int col1 = scanner.nextInt();
+                scanner.nextLine();
+                int col = col1 - 1;
+                if (col < 0 || col >= C4_COLS) {
+                    System.out.println("❌ Invalid column number. Please enter between 1 and " + C4_COLS + ".");
+                } else if (C4_BOARD[0][col] != ' ') {
+                    System.out.println("❌ Column " + col1 + " is full. Try another.");
+                } else {
+                    return col;
+                }
+            } else {
+                System.out.println("❌ Please enter a number.");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static void c4Drop(int col) {
+        for (int r = C4_ROWS - 1; r >= 0; r--) {
+            if (C4_BOARD[r][col] == ' ') {
+                C4_BOARD[r][col] = C4_CURRENT;
+                return;
+            }
+        }
+    }
+
+    private static void c4PrintBoard() {
+        System.out.println();
+        System.out.print("  ");
+        for (int c = 0; c < C4_COLS; c++) {
+            int pad = (C4_CELL_W - String.valueOf(c + 1).length()) / 2;
+            System.out.print(" ".repeat(pad) + (c + 1) + " ".repeat(C4_CELL_W - pad - 1) + " ");
+        }
+        System.out.println("\n");
+
+        System.out.print("┏");
+        for (int c = 0; c < C4_COLS; c++) {
+            System.out.print(C4_H.repeat(C4_CELL_W));
+            if (c < C4_COLS - 1) System.out.print("┳");
+        }
+        System.out.println("┓");
+
+        for (int r = 0; r < C4_ROWS; r++) {
+            System.out.print(C4_V);
+            for (int c = 0; c < C4_COLS; c++) {
+                char p = C4_BOARD[r][c];
+                String cellStr;
+                if (p == 'X') cellStr = C4_COLOR_X + C4_DISK + C4_RESET;
+                else if (p == 'O') cellStr = C4_COLOR_O + C4_DISK + C4_RESET;
+                else cellStr = C4_EMPTY;
+
+                int left = (C4_CELL_W - 1) / 2;
+                int right = C4_CELL_W - 1 - left;
+                System.out.print(" ".repeat(left) + cellStr + " ".repeat(right));
+                System.out.print(C4_V);
+            }
+            System.out.println();
+
+            if (r < C4_ROWS - 1) {
+                System.out.print("┣");
+                for (int c = 0; c < C4_COLS; c++) {
+                    System.out.print(C4_H.repeat(C4_CELL_W));
+                    if (c < C4_COLS - 1) System.out.print("╋");
+                }
+                System.out.println("┫");
+            }
+        }
+
+        System.out.print("┗");
+        for (int c = 0; c < C4_COLS; c++) {
+            System.out.print(C4_H.repeat(C4_CELL_W));
+            if (c < C4_COLS - 1) System.out.print("┻");
+        }
+        System.out.println("┛\n");
+    }
+
+    private static boolean c4CheckWin(char p) {
+        // Horizontal
+        for (int r = 0; r < C4_ROWS; r++)
+            for (int c = 0; c <= C4_COLS - 4; c++)
+                if (C4_BOARD[r][c]==p && C4_BOARD[r][c+1]==p && C4_BOARD[r][c+2]==p && C4_BOARD[r][c+3]==p)
+                    return true;
+        // Vertical
+        for (int r = 0; r <= C4_ROWS - 4; r++)
+            for (int c = 0; c < C4_COLS; c++)
+                if (C4_BOARD[r][c]==p && C4_BOARD[r+1][c]==p && C4_BOARD[r+2][c]==p && C4_BOARD[r+3][c]==p)
+                    return true;
+        // Diagonal ↗
+        for (int r = 3; r < C4_ROWS; r++)
+            for (int c = 0; c <= C4_COLS - 4; c++)
+                if (C4_BOARD[r][c]==p && C4_BOARD[r-1][c+1]==p && C4_BOARD[r-2][c+2]==p && C4_BOARD[r-3][c+3]==p)
+                    return true;
+        // Diagonal ↘
+        for (int r = 0; r <= C4_ROWS - 4; r++)
+            for (int c = 0; c <= C4_COLS - 4; c++)
+                if (C4_BOARD[r][c]==p && C4_BOARD[r+1][c+1]==p && C4_BOARD[r+2][c+2]==p && C4_BOARD[r+3][c+3]==p)
+                    return true;
+        return false;
+    }
+
+    /** AI side holder */
+    static char C4_AI_SIDE = 'O';
+
+    private static void c4AI_setSide(char side) { C4_AI_SIDE = side; }
+    private static char c4AI_getSide() { return C4_AI_SIDE; }
+
+    private static int c4AI_bestMove(char[][] b, int rows, int cols, int depth) {
+        java.util.List<Integer> valid = c4AI_validCols(b, cols);
+        if (valid.isEmpty()) return -1;
+
+        // 1) Immediate win
+        for (int c : valid) if (c4AI_makes4(b, rows, c, C4_AI_SIDE)) return c;
+
+        // 2) Immediate block
+        char opp = (C4_AI_SIDE == 'X') ? 'O' : 'X';
+        for (int c : valid) if (c4AI_makes4(b, rows, c, opp)) return c;
+
+        // 3) Minimax light
+        int bestCol = valid.get(new java.util.Random().nextInt(valid.size()));
+        int bestScore = Integer.MIN_VALUE;
+        int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
+
+        for (int c : valid) {
+            int r = c4AI_nextRow(b, rows, c);
+            if (r == -1) continue; // FIX: Skip if column is full
+
+            b[r][c] = C4_AI_SIDE;
+            int score = c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, false, opp);
+            b[r][c] = ' ';
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestCol = c;
+            }
+            alpha = Math.max(alpha, bestScore);
+            if (alpha >= beta) break;
+        }
+        return bestCol;
+    }
+
+    private static int c4AI_minimax(char[][] b, int rows, int cols, int depth, int alpha, int beta, boolean max, char opp) {
+        if (depth == 0 || c4AI_terminal(b, rows, cols)) {
+            return c4AI_eval(b, rows, cols, C4_AI_SIDE);
+        }
+
+        java.util.List<Integer> valid = c4AI_validCols(b, cols);
+        if (valid.isEmpty()) return c4AI_eval(b, rows, cols, C4_AI_SIDE);
+
+        if (max) {
+            int val = Integer.MIN_VALUE;
+            for (int c : valid) {
+                int r = c4AI_nextRow(b, rows, c);
+                if (r == -1) continue; // FIX: Skip if column is full
+
+                b[r][c] = C4_AI_SIDE;
+                val = Math.max(val, c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, false, opp));
+                b[r][c] = ' ';
+                alpha = Math.max(alpha, val);
+                if (alpha >= beta) break;
+            }
+            return val;
+        } else {
+            int val = Integer.MAX_VALUE;
+            for (int c : valid) {
+                int r = c4AI_nextRow(b, rows, c);
+                if (r == -1) continue; // FIX: Skip if column is full
+
+                b[r][c] = opp;
+                val = Math.min(val, c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, true, opp));
+                b[r][c] = ' ';
+                beta = Math.min(beta, val);
+                if (alpha >= beta) break;
+            }
+            return val;
+        }
+    }
+
+    private static int c4AI_eval(char[][] b, int rows, int cols, char me) {
+        char you = (me == 'X') ? 'O' : 'X';
+        if (c4AI_four(b, rows, cols, me))  return 100000;
+        if (c4AI_four(b, rows, cols, you)) return -100000;
+
+        int score = 0;
+        int center = cols / 2;
+        for (int r = 0; r < rows; r++) {
+            if (b[r][center] == me) score += 5;
+        }
+
+        score += c4AI_windowSum(b, rows, cols, me);
+        score -= c4AI_windowSum(b, rows, cols, you) / 2;
+        return score;
+    }
+
+    private static int c4AI_windowSum(char[][] b, int rows, int cols, char p) {
+        int s = 0;
+        // Horizontal
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                s += c4AI_scoreWindow(new char[]{b[r][c], b[r][c+1], b[r][c+2], b[r][c+3]}, p);
+        // Vertical
+        for (int r = 0; r <= rows - 4; r++)
+            for (int c = 0; c < cols; c++)
+                s += c4AI_scoreWindow(new char[]{b[r][c], b[r+1][c], b[r+2][c], b[r+3][c]}, p);
+        // Diagonal ↗
+        for (int r = 3; r < rows; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                s += c4AI_scoreWindow(new char[]{b[r][c], b[r-1][c+1], b[r-2][c+2], b[r-3][c+3]}, p);
+        // Diagonal ↘
+        for (int r = 0; r <= rows - 4; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                s += c4AI_scoreWindow(new char[]{b[r][c], b[r+1][c+1], b[r+2][c+2], b[r+3][c+3]}, p);
+        return s;
+    }
+
+    private static int c4AI_scoreWindow(char[] w, char p) {
+        char q = (p == 'X') ? 'O' : 'X';
+        int pc=0, qc=0, emp=0;
+        for (char ch : w) {
+            if (ch == p) pc++;
+            else if (ch == q) qc++;
+            else if (ch == ' ') emp++;
+        }
+        if (pc == 4) return 10000;
+        if (pc == 3 && emp == 1) return 50;
+        if (pc == 2 && emp == 2) return 10;
+        if (qc == 3 && emp == 1) return -40;
+        return 0;
+    }
+
+    private static boolean c4AI_terminal(char[][] b, int rows, int cols) {
+        return c4AI_four(b, rows, cols, 'X') ||
+                c4AI_four(b, rows, cols, 'O') ||
+                c4AI_validCols(b, cols).isEmpty();
+    }
+
+    private static java.util.List<Integer> c4AI_validCols(char[][] b, int cols) {
+        java.util.List<Integer> res = new java.util.ArrayList<>();
+        for (int c = 0; c < cols; c++) {
+            if (b[0][c] == ' ') res.add(c);
+        }
+        return res;
+    }
+
+    private static int c4AI_nextRow(char[][] b, int rows, int c) {
+        for (int r = rows - 1; r >= 0; r--) {
+            if (b[r][c] == ' ') return r;
+        }
+        return -1;
+    }
+
+    private static boolean c4AI_makes4(char[][] b, int rows, int c, char p) {
+        int r = c4AI_nextRow(b, rows, c);
+        if (r == -1) return false;
+
+        b[r][c] = p;
+        boolean win = c4AI_four(b, rows, C4_COLS, p);
+        b[r][c] = ' ';
+        return win;
+    }
+
+    private static boolean c4AI_four(char[][] b, int rows, int cols, char p) {
+        // Horizontal
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                if (b[r][c]==p && b[r][c+1]==p && b[r][c+2]==p && b[r][c+3]==p)
+                    return true;
+        // Vertical
+        for (int r = 0; r <= rows - 4; r++)
+            for (int c = 0; c < cols; c++)
+                if (b[r][c]==p && b[r+1][c]==p && b[r+2][c]==p && b[r+3][c]==p)
+                    return true;
+        // Diagonal ↗
+        for (int r = 3; r < rows; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                if (b[r][c]==p && b[r-1][c+1]==p && b[r-2][c+2]==p && b[r-3][c+3]==p)
+                    return true;
+        // Diagonal ↘
+        for (int r = 0; r <= rows - 4; r++)
+            for (int c = 0; c <= cols - 4; c++)
+                if (b[r][c]==p && b[r+1][c+1]==p && b[r+2][c+2]==p && b[r+3][c+3]==p)
+                    return true;
+        return false;
+    }
 }
