@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,7 +168,9 @@ public class Main
                     break;
 
                 case "E":
-                    // Programdan çıkış yapılacak, do-while dışına düşecek
+                    break;
+                        default:
+                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");// Programdan çıkış yapılacak, do-while dışına düşecek
                     break;
             }
         }
@@ -199,9 +202,7 @@ public class Main
                         break;
                     case 2:
                         System.out.println("\n Running Task A2...");
-                        reverseTheWords(
-
-                        );
+                        reverseTheWords();
                         break;
                     case 3:
                         System.out.println("Returning to Main Menu...\n");
@@ -519,579 +520,1047 @@ public class Main
     }
 
 
-// Option A Task 2: Reverse the Words Main Code
-private static void reverseTheWords() {
-    System.out.println("\n--- Task 2: Reverse the Words ---");
-    System.out.println("Please enter the text you want to reverse:");
+    // Option A Task 2: Reverse the Words Main Code
+    /*
+    * Prompts the user to enter a text and then displays the reversed version of that text.
+    * @author Zafer Mert Serinken
+    */
+    private static void reverseTheWords() {
+        System.out.println("\n--- Task 2: Reverse the Words ---");
+        System.out.println("Please enter the text you want to reverse:");
 
-    String originalText = scanner.nextLine();
+        String originalText = scanner.nextLine();
 
-    System.out.println("\n--- Orijinal Metin ---");
-    System.out.println(originalText);
+        System.out.println("\n--- Original text ---");
+        System.out.println(originalText);
 
-    // Özyinelemeli metodu çağırarak metni ters çeviriyoruz.
-    String reversedText = reverseSentenceRecursively(originalText.trim());
+        String reversedText = reverseSentenceRecursively(originalText.trim());
 
-    System.out.println("\n--- Ters Çevrilmiş Metin ---");
-    System.out.println(reversedText);
+        System.out.println("\n--- Reversed text ---");
+        System.out.println(reversedText);
 
-    System.out.println("\nPress ENTER to return to the Primary School menu...");
-    scanner.nextLine();
-}
-
-// ReverseWords sınıfında kullanılan fonskiyon 1
-private static String reverseSentenceRecursively(String sentence) {
-    if (sentence == null || sentence.isEmpty()) {
-        return "";
+        System.out.println("\nPress ENTER to return to the Primary School menu...");
+        scanner.nextLine();
     }
 
-    String trimmedSentence = sentence.trim();
-    if (trimmedSentence.isEmpty()) {
-        return "";
-    }
-
-    String firstWord;
-    String restOfSentence;
-
-    int firstSpaceIndex = trimmedSentence.indexOf(' ');
-    if (firstSpaceIndex == -1) {
-        firstWord = trimmedSentence;
-        restOfSentence = "";
-    } else {
-        firstWord = trimmedSentence.substring(0, firstSpaceIndex);
-        restOfSentence = trimmedSentence.substring(firstSpaceIndex + 1);
-    }
-
-    String reversedWord = reverseSingleWord(firstWord);
-    String processedRest = reverseSentenceRecursively(restOfSentence);
-
-    if (processedRest.isEmpty()) {
-        return reversedWord;
-    } else {
-        return reversedWord + " " + processedRest;
-    }
-}
-
-// ReverseWords sınıfında kullanılan fonksiyon 2
-private static String reverseSingleWord(String word) {
-    if (word == null) return null;
-
-    StringBuilder letters = new StringBuilder();
-    for (char c : word.toCharArray()) {
-        if (Character.isLetter(c)) {
-            letters.append(c);
+    /*
+     * This function reverses the sentences except for punctuation and numbers using the recursion method.
+     * @author Zafer Mert Serinken
+     * @param Sentence The input string whose words are to be reversed.
+     * @return A new String with the word order reversed. Returns an empty String for null or empty inputs.
+     */
+    private static String reverseSentenceRecursively(String sentence) {
+        if (sentence == null || sentence.isEmpty()) { // Base case
+            return "";
         }
-    }
 
-    if (letters.length() < 2) {
-        return word;
-    }
+        String trimmedSentence = sentence.trim();
+        if (trimmedSentence.isEmpty()) {
+            return "";
+        }
 
-    letters.reverse();
+        String firstWord;
+        String restOfSentence;
 
-    StringBuilder result = new StringBuilder();
-    int letterIndex = 0;
-    for (char c : word.toCharArray()) {
-        if (Character.isLetter(c)) {
-            result.append(letters.charAt(letterIndex));
-            letterIndex++;
+        int firstSpaceIndex = trimmedSentence.indexOf(' '); // Divide the sentences into two parts: first word and the rest of the sentence
+        if (firstSpaceIndex == -1) { // No words left
+            firstWord = trimmedSentence;
+            restOfSentence = "";
         } else {
-            result.append(c);
+            firstWord = trimmedSentence.substring(0, firstSpaceIndex);
+            restOfSentence = trimmedSentence.substring(firstSpaceIndex + 1);
+        }
+
+        String reversedWord = reverseSingleWord(firstWord);
+        String processedRest = reverseSentenceRecursively(restOfSentence);
+
+        if (processedRest.isEmpty()) { // Merge results
+            return reversedWord;
+        } else {
+            return reversedWord + " " + processedRest;
         }
     }
-    return result.toString();
-}
+
+    /*
+     * Reverses the letter characters within a single word.
+     * @author Zafer Mert Serinken
+     * @param word The single string (word) whose letters are to be reversed.
+     * @return A new String with only the letter characters reversed, or returns null if the input is null.
+     */
+    private static String reverseSingleWord(String word) {
+        if (word == null) return null;
+
+        StringBuilder letters = new StringBuilder();
+        for (char c : word.toCharArray()) { // Sort out the characters in the words
+            if (Character.isLetter(c)) {
+                letters.append(c);
+            }
+        }
+
+        if (letters.length() < 2) { // returns the word with only one character
+            return word;
+        }
+
+        letters.reverse();
+
+        // When re-forming the word, put the non-letter characters in their original places
+        StringBuilder result = new StringBuilder();
+        int letterIndex = 0;
+        for (char c : word.toCharArray()) {
+            if (Character.isLetter(c)) {
+                result.append(letters.charAt(letterIndex));
+                letterIndex++;
+            } else { // If the character is not a letter , insert it as is
+                result.append(c);
+            }
+        }
+        return result.toString();
+    }
 
 
-// ===========================================
-public static void CalculatePrimeNumbers()
-{
-    int n;
+    // ===========================================
+    /*
+     * Function takes an integer that equal/larger than 12 from the user.
+     * Calculates primes to n by using Sieve of Eratosthenes, Sieve of Sundaram, and Sieve of Atkin algorithms.
+     * Shows the execution time to compare.
+     * @author Selçuk Aloba
+     */
+    public static void CalculatePrimeNumbers()
+    {
+        int n;
 
-    do {
-        System.out.print("Please enter an integer n (n >= 12): ");
-        // Global (statik) scanner nesnesini kullanıyoruz.
-        if (scanner.hasNextInt())
-        {
-            n = scanner.nextInt();
-            // nextInt() sonrası satır sonu karakterini tüketmek için
-            scanner.nextLine();
-
-            if (n < 12)
+        do {
+            System.out.print("Please enter an integer n (n >= 12): ");
+            if (scanner.hasNextInt())
             {
-                System.out.println("Input should be larger/equal to 12. Please try again.");
+                n = scanner.nextInt();
+                scanner.nextLine(); // buffer temizle
+
+                if (n < 12)
+                {
+                    System.out.println("Input should be larger/equal to 12. Please try again.");
+                }
             }
-        }
-        else
-        {
-            System.out.println("Invalid input. Please enter an integer.");
-            // Hatalı girdiyi tarayıcıdan (buffer'dan) temizle
-            scanner.next();
-            // next() sonrası satır sonu karakterini tüketmek için
-            scanner.nextLine();
-            n = 0;
-        }
-    }
-    while(n<12);
-
-    SieveOfEratosthenes(n);
-    SieveOfSundaram(n);
-    SieveOfAtkin(n);
-}
-
-// Sieve of Eratosthenes metodu
-public static void SieveOfEratosthenes(int n)
-{
-    long startTime = System.nanoTime();
-    boolean[] isPrime = new boolean[n+1];
-    Arrays.fill(isPrime, true);
-    isPrime[0] = isPrime[1] = false;
-
-    for(int j=2; j*j<=n; j++)
-    {
-        if(isPrime[j])
-        {
-            for(int i = j*j; i <= n; i += j)
+            else
             {
-                isPrime[i]=false;
+                System.out.println("Invalid input. Please enter an integer.");
+                scanner.next();
+                scanner.nextLine(); // buffer temizle
+                n = 0;
             }
         }
+        while(n<12);
+
+        SieveOfEratosthenes(n);
+        SieveOfSundaram(n);
+        SieveOfAtkin(n);
+
+        System.out.println("\nPress ENTER to return to the Secondary School menu...");
+        scanner.nextLine();
     }
 
-    ArrayList<Integer> primeNumbers = new ArrayList<>();
-    for(int i =2; i<= n; i++)
+    /*
+     * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
+     * It iteratively marks multiples of each prime number starting from 2 as not prime
+     * It prints the first 3 and last 2 primes along with execution time.
+     * @param n The upper limit for prime number generation.
+     * @return There is no return because it is a void function
+     */
+    public static void SieveOfEratosthenes(int n)
     {
-        if(isPrime[i])
+        long startTime = System.nanoTime();
+        boolean[] isPrime = new boolean[n+1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for(int j=2; j*j<=n; j++)
         {
-            primeNumbers.add(i);
-        }
-    }
-    long endTime = System.nanoTime();
-    double duration = (endTime - startTime)/1_000_000_000.0;
-    int size = primeNumbers.size();
-
-    System.out.println("1. Sieve of Eratosthenes");
-    // n>=12 olduğu için size>=5 garanti, direkt erişim güvenli
-    System.out.println("First 3 primes: " + primeNumbers.get(0) +  ", " + primeNumbers.get(1)+  ", " + primeNumbers.get(2));
-    System.out.println("Last 2 primes: " + primeNumbers.get(size -2) +  ", " + primeNumbers.get(size-1));
-    System.out.printf("Execution time(s): %.9f\n", duration);
-    System.out.println(" ");
-}
-
-// Sieve of Sundaram metodu
-public static void SieveOfSundaram(int n)
-{
-    long startTime = System.nanoTime();
-    int k = (n-1)/2;
-
-    boolean[] isNotPrime = new boolean[k+1];
-    for (int i= 1; i<= k; i++)
-    {
-        for (int j = i; (i+j+2*i*j) <= k; j++)
-        {
-            isNotPrime[i+j+2*i* j] = true;
-        }
-    }
-    ArrayList<Integer> primeNumbers = new ArrayList<>();
-    if(n>=2)
-    {
-        primeNumbers.add(2);
-    }
-    for(int i=1; i<=k; i++)
-    {
-        if(!isNotPrime[i])
-        {
-            int prime = 2*i+1;
-            if(prime <= n)
+            if(isPrime[j])
             {
-                primeNumbers.add(prime);
-            }
-        }
-    }
-    long endTime = System.nanoTime();
-    double duration = (endTime - startTime) / 1_000_000_000.0;
-    int size = primeNumbers.size();
-
-    System.out.println("2: Sieve of Sundaram");
-    System.out.println("First 3 primes: " + primeNumbers.get(0) + ", " + primeNumbers.get(1) + ", " + primeNumbers.get(2));
-    System.out.println("Last 2 primes: " + primeNumbers.get(size - 2) + ", " + primeNumbers.get(size - 1));
-    System.out.printf("Execution time(s): %.9f\n", duration);
-    System.out.println(" ");
-}
-
-// Sieve of Atkin metodu
-public static void SieveOfAtkin(int n)
-{
-    long startTime = System.nanoTime();
-    boolean[] sieve = new boolean[n+1];
-
-    // n>=12 olduğu için 2 ve 3 kontrolü mantıklı
-    if(n>=2)
-    {
-        sieve[2] = true;
-    }
-    if(n>=3)
-    {
-        sieve[3] = true;
-    }
-    int limit = (int) Math.sqrt(n);
-
-    // 1. Aşama: Olası asalları işaretle
-    for (int x = 1; x <= limit; x++)
-    {
-        for (int y = 1; y <= limit; y++)
-        {
-            int num;
-
-            // 4x^2 + y^2
-            num = (4 * x * x) + (y * y);
-            if (num <= n && (num % 12 == 1 || num % 12 == 5)) {
-                sieve[num] = !sieve[num];
-            }
-
-            // 3x^2 + y^2
-            num = (3 * x * x) + (y * y);
-            if (num <= n && (num % 12 == 7)) {
-                sieve[num] = !sieve[num];
-            }
-
-            // 3x^2 - y^2 (x > y ise)
-            if (x > y) {
-                num = (3 * x * x) - (y * y);
-                if (num <= n && (num % 12 == 11)) {
-                    sieve[num] = !sieve[num];
+                for(int i = j*j; i <= n; i += j)
+                {
+                    isPrime[i]=false;
                 }
             }
         }
-    }
 
-    // 2. Aşama: Karelerin katlarını ele (Compositelere bak)
-    for (int r = 5; r * r <= n; r++)
-    {
-        if (sieve[r])
+        ArrayList<Integer> primeNumbers = new ArrayList<>();
+        for(int i =2; i<= n; i++)
         {
-            for (int i = r * r; i <= n; i += r * r)
+            if(isPrime[i])
             {
-                sieve[i] = false;
+                primeNumbers.add(i);
             }
         }
+        long endTime = System.nanoTime();
+        double duration = (endTime - startTime)/1_000_000_000.0;
+        int size = primeNumbers.size();
+
+        System.out.println("1. Sieve of Eratosthenes");
+        System.out.println("First 3 primes: " + primeNumbers.get(0) +  ", " + primeNumbers.get(1)+  ", " + primeNumbers.get(2));
+        System.out.println("Last 2 primes: " + primeNumbers.get(size -2) +  ", " + primeNumbers.get(size-1));
+        System.out.printf("Execution time(s): %.9f\n", duration);
+        System.out.println(" ");
     }
 
-    // 3. Aşama: Sonuçları topla
-    ArrayList<Integer> primeNumbers= new ArrayList<>();
-    for (int i = 2; i <= n; i++)
+    /*
+     * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
+     * It iteratively marks multiples of each prime number starting from 2 as not prime
+     * It prints the first 3 and last 2 primes along with execution time.
+     * @param n The upper limit for prime number generation.
+     * @return There is no return because it is a void function
+     */
+    public static void SieveOfSundaram(int n)
     {
-        if (sieve[i])
+        long startTime = System.nanoTime();
+        int k = (n-1)/2;
+
+        boolean[] isNotPrime = new boolean[k+1];
+        for (int i = 1; i <= k; i++)
         {
-            primeNumbers.add(i);
-        }
-    }
-
-    long endTime = System.nanoTime();
-    double duration = (endTime - startTime) / 1_000_000_000.0;
-    int size = primeNumbers.size();
-
-    System.out.println("3. Sieve of Atkin");
-    System.out.println("First 3 primes: " + primeNumbers.get(0) + ", " + primeNumbers.get(1) + ", " + primeNumbers.get(2));
-    System.out.println("Last 2 primes: " + primeNumbers.get(size - 2) + ", " + primeNumbers.get(size - 1));
-    System.out.printf("Execution time(s): %.9f\n", duration);
-    System.out.println(" ");
-}
-// ===========================================
-
-// Option B Submenu
-private static void subMenuOptionB() {
-    int choice = 0;
-    do {
-        System.out.println("\n=== OPTION B: SECONDARY SCHOOL ===");
-        System.out.println("1-) Prime Number Generator ");
-        System.out.println("2-) Step-by-step Expression Evaluation");
-        System.out.println("3-) Return to Main Menu");
-        System.out.print("Your choice: ");
-
-        if (scanner.hasNextInt()) {
-            choice = scanner.nextInt();
-            scanner.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.println("\n Running Task B1 ");
-
-                    break;
-                case 2:
-                    System.out.println("\n Running Task B2");
-                    expressioncontroller();
-                    break;
-                case 3:
-                    System.out.println("Project Returning to Main Menu...\n");
-                    break;
-                default:
-                    System.out.println("❌ Please enter a number between 1 and 3.");
+            for (int j = i; (i + j + 2 * i * j) <= k; j++)
+            {
+                isNotPrime[i + j + 2 * i * j] = true;
             }
-        } else {
-            System.out.println("❌ Invalid input. Please enter a number.");
-            scanner.nextLine();
         }
-    } while (choice != 3);
-}
-// --- Character Functions and Priority ---
-private static int takePriority ( char operator){
-    if (operator == '+' || operator == '-') return 1;
-    if (operator == 'x' || operator == ':') return 2;
-    return 0;
-}
-
-private static boolean isOperator ( char c){
-    return c == '+' || c == '-' || c == 'x' || c == ':';
-}
-
-private static boolean isDigit ( char c){
-    return c >= '0' && c <= '9';
-}
-
-// --- Check Validation ---
-public static boolean isValidExpression (String expression){
-    if (expression == null || expression.trim().isEmpty()) return false;
-
-    String trimmed = expression.replaceAll(" ", "").replace(',', '.');
-
-    for (int i = 0; i < trimmed.length(); i++) {
-        char c = trimmed.charAt(i);
-
-        if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')')) {
-            return false;
+        ArrayList<Integer> primeNumbers = new ArrayList<>();
+        if(n>=2)
+        {
+            primeNumbers.add(2);
         }
+        for(int i=1; i<=k; i++)
+        {
+            if(!isNotPrime[i])
+            {
+                int prime = 2*i+1;
+                if(prime <= n)
+                {
+                    primeNumbers.add(prime);
+                }
+            }
+        }
+        long endTime = System.nanoTime();
+        double duration = (endTime - startTime) / 1_000_000_000.0;
+        int size = primeNumbers.size();
+
+        System.out.println("2: Sieve of Sundaram");
+        System.out.println("First 3 primes: " + primeNumbers.get(0) + ", " + primeNumbers.get(1) + ", " + primeNumbers.get(2));
+        System.out.println("Last 2 primes: " + primeNumbers.get(size - 2) + ", " + primeNumbers.get(size - 1));
+        System.out.printf("Execution time(s): %.9f\n", duration);
+        System.out.println(" ");
     }
 
-    int balance = 0;
-    for (char c : trimmed.toCharArray()) {
-        if (c == '(') balance++;
-        else if (c == ')') balance--;
-        if (balance < 0) return false;
+    /*
+     * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
+     * It iteratively marks multiples of each prime number starting from 2 as not prime
+     * It prints the first 3 and last 2 primes along with execution time.
+     * @param n The upper limit for prime number generation.
+     * @return There is no return because it is a void function
+     */
+    public static void SieveOfAtkin(int n)
+    {
+        long startTime = System.nanoTime();
+        boolean[] sieve = new boolean[n+1];
+
+        if(n>=2)
+        {
+            sieve[2] = true;
+        }
+        if(n>=3)
+        {
+            sieve[3] = true;
+        }
+        int limit = (int) Math.sqrt(n);
+
+        for (int x = 1; x <= limit; x++)
+        {
+            for (int y = 1; y <= limit; y++)
+            {
+                int num;
+
+                num = (4 * x * x) + (y * y);
+                if (num <= n && (num % 12 == 1 || num % 12 == 5)) {
+                    sieve[num] = !sieve[num];
+                }
+
+                num = (3 * x * x) + (y * y);
+                if (num <= n && (num % 12 == 7)) {
+                    sieve[num] = !sieve[num];
+                }
+
+                if (x > y) {
+                    num = (3 * x * x) - (y * y);
+                    if (num <= n && (num % 12 == 11)) {
+                        sieve[num] = !sieve[num];
+                    }
+                }
+            }
+        }
+
+        for (int r = 5; r * r <= n; r++)
+        {
+            if (sieve[r])
+            {
+                for (int i = r * r; i <= n; i += r * r)
+                {
+                    sieve[i] = false;
+                }
+            }
+        }
+
+        ArrayList<Integer> primeNumbers= new ArrayList<>();
+        for (int i = 2; i <= n; i++)
+        {
+            if (sieve[i])
+            {
+                primeNumbers.add(i);
+            }
+        }
+
+        long endTime = System.nanoTime();
+        double duration = (endTime - startTime) / 1_000_000_000.0;
+        int size = primeNumbers.size();
+
+        System.out.println("3. Sieve of Atkin");
+        System.out.println("First 3 primes: " + primeNumbers.get(0) + ", " + primeNumbers.get(1) + ", " + primeNumbers.get(2));
+        System.out.println("Last 2 primes: " + primeNumbers.get(size - 2) + ", " + primeNumbers.get(size - 1));
+        System.out.printf("Execution time(s): %.9f\n", duration);
+        System.out.println(" ");
     }
-    if (balance != 0) return false;
+    // ===========================================
 
-    for (int i = 0; i < trimmed.length() - 1; i++) {
-        if (isOperator(trimmed.charAt(i)) && isOperator(trimmed.charAt(i + 1))) {
-            if (trimmed.charAt(i) != '-' || trimmed.charAt(i + 1) != '-') {
+    // Option B Submenu
+    private static void subMenuOptionB() {
+        int choice = 0;
+        do {
+            System.out.println("\n=== OPTION B: SECONDARY SCHOOL ===");
+            System.out.println("1-) Prime Number Generator ");
+            System.out.println("2-) Step-by-step Expression Evaluation");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Your choice: ");
 
-            } else if (i != 0 && trimmed.charAt(i - 1) != '(') {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n Running Task B1 ");
+                        CalculatePrimeNumbers();
+                        break;
+                    case 2:
+                        System.out.println("\n Running Task B2");
+                        expressioncontroller();
+                        break;
+                    case 3:
+                        System.out.println("Project Returning to Main Menu...\n");
+                        break;
+                    default:
+                        System.out.println("❌ Please enter a number between 1 and 3.");
+                }
+            } else {
+                System.out.println("❌ Invalid input. Please enter a number.");
+                scanner.nextLine();
+            }
+        } while (choice != 3);
+    }
+    // --- Character Functions and Priority ---
+
+     /* Assigns order to operators according to their mathematical operation priorities.
+      * @param operator
+      * @author Arda Dülger
+      * return 0 has no priority, 1 has low priority, 2 has the most priority.
+      */
+    private static int takePriority(char operator){
+        if (operator == '+' || operator == '-') return 1; // Assigns a precedence level to operators.
+        if (operator == 'x' || operator == ':') return 2;
+        return 0;  //Other characters return 0.
+    }
+
+    /*
+     * Checks the 'c' if its an operator.
+     * @param c
+     * @author Arda Dülger
+     * @return true if the c is an operator '+,-,x,:' otherwise false.
+     */
+    private static boolean isOperator(char c){
+        return c == '+' || c == '-' || c == 'x' || c == ':';
+    } // It checks the valid operators.
+
+    /*
+     * Checks the 'c' if its a digits.
+     * @param c
+     * @author Arda Dülger
+     * @return ture if c is a digit, otherwise false.
+     */
+    private static boolean isDigit(char c){
+        return c >= '0' && c <= '9';
+    }
+
+    // --- Check Validation ---
+
+    /*
+     * Checks if a mathematical expression follows rules such as spaces, invalid characters,
+     * incorrect use of parentheses, incorrect operator/operand order, and incorrect decimal number format.
+     * @param expression A user-entered mathematical expression string to be checked for validity.
+     * @author Arda Dülger
+     * @return boolean returns true if the expression is valid; false if it is invalid, has bad, or incomplete syntax.
+     */
+    public static boolean isValidExpression (String expression){
+        if (expression == null || expression.trim().isEmpty()) return false;
+
+        // Convert commas to periods and remove spaces
+        StringBuilder ns = new StringBuilder();
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (c == ' ') {
+                continue;
+            }
+            else if (c == ',') {
+                ns.append('.'); // Insert a period instead of a comma
+            } else {
+                ns.append(c); //Add all other characters
+            }
+        }
+        String trimmed= ns.toString();
+        // Checks invalid characters
+        for (int i = 0; i < trimmed.length(); i++) {
+            char c = trimmed.charAt(i);
+
+
+            if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')' || c == '.')) {
                 return false;
             }
         }
-    }
 
-    return true;
-}
-
-
-
-// --- Evaluation ---
-
-public static double evaluateAndPrintSteps (String expression){
-    System.out.println(expression);
-    return recursiveSolve(expression);
-}
-
-private static double recursiveSolve (String expression){
-
-    //Step-by-step printing logic is implemented in this method.
-
-    // Basic Condition Check: Is the expression just a number?
-    // If it's just a number, the calculation is complete, return it immediately.
-    try {
-        return Double.parseDouble(expression);
-    } catch (NumberFormatException ignored) {
-
-    }
-
-    // Parentheses Handling: The logic for finding the DEEPEST parentheses is preserved.
-    int balance = 0;
-    int OpenParent = -1;
-    int CloseParent = -1;
-    int nestingLevel = 0;
-
-    for (int i = 0; i < expression.length(); i++) {
-        char c = expression.charAt(i);
-        if (c == '(') {
-            balance++;
-            if (balance > nestingLevel) {
-                nestingLevel = balance;
-                OpenParent = i;
-            }
-        } else if (c == ')') {
-            if (balance == nestingLevel) {
-                CloseParent = i;
-
-                break;
-            }
-            balance--;
+        // Parentheses control
+        int balance = 0;
+        for (char c : trimmed.toCharArray()) {
+            if (c == '(') balance++;
+            else if (c == ')') balance--;
+            if (balance < 0) return false;
         }
-    }
-
-    if (OpenParent != -1 && CloseParent != -1 && CloseParent > OpenParent) {
-        String innerExpression = expression.substring(OpenParent + 1, CloseParent);
+        if (balance != 0) return false;
 
 
-        double innerResult = recursiveSolve(innerExpression);
+        if (trimmed.length() > 0) {
+            char firstChar = trimmed.charAt(0);
 
 
-        String resultStr = String.format("%f", innerResult).replaceAll("(\\.\\d*?)0+$", "$1").replaceAll("\\.$", "");
-
-
-        String newExpression = expression.substring(0, OpenParent) +
-                resultStr +
-                expression.substring(CloseParent + 1);
-
-        System.out.println("= " + newExpression);
-
-        return recursiveSolve(newExpression);
-    }
-
-
-    int splitIndex = -1;
-
-
-    for (int i = expression.length() - 1; i >= 0; i--) {
-        char c = expression.charAt(i);
-        if (isOperator(c) && takePriority(c) == 1) {
-
-            if (c == '-' && (i == 0 || expression.charAt(i - 1) == '(' || isOperator(expression.charAt(i - 1)))) {
-
-                continue;
+            if (firstChar == '+' || firstChar == 'x' || firstChar == ':') {
+                return false;
             }
-            splitIndex = i;
-            break;
+
+            // The end of the expression cannot be an operator
+            char lastChar = trimmed.charAt(trimmed.length() - 1);
+            if (isOperator(lastChar)) {
+                return false;
+            }
         }
+
+        //  Operator and Operand order (Side by side operators in parentheses).
+        for (int i = 0; i < trimmed.length() - 1; i++) {
+            char current = trimmed.charAt(i);
+            char next = trimmed.charAt(i + 1);
+
+
+            if (isOperator(current) && isOperator(next)) {
+                if (next != '-') {
+                    // ++, +x, +:, -+, -x, -: will be error.
+                    return false;
+                }
+                if (i > 0 && isDigit(trimmed.charAt(i - 1)) && next == '-') {
+                    return false;
+                }
+            }
+
+            //  Number and parentheses control
+
+            if (isDigit(current) && next == '(') return false;
+            if (current == ')' && isDigit(next)) return false;
+
+            //  Parentheses and operator control
+
+            if (current == '(' && isOperator(next) && next != '-') {
+
+                return false;
+            }
+
+            if (isOperator(current) && next == ')') return false;
+
+            if (current == '.') {
+                if (i == trimmed.length() - 1 || !isDigit(next)) return false;
+                if (i > 0 && !isDigit(trimmed.charAt(i - 1))) return false;
+
+                int count = 0;
+                for (int j = 0; j <= i; j++) {
+                    if (isOperator(trimmed.charAt(j)) || trimmed.charAt(j) == '(') {
+                        count = 0;
+                    }
+                    if (trimmed.charAt(j) == '.') {
+                        count++;
+                    }
+                    if (count > 1) return false;
+                }
+            }
+        }
+        return true;
     }
 
-    // If addition/subtraction is not found, search for multiplication/division (Rightmost)
-    if (splitIndex == -1) {
+    // --- Evaluation ---
+
+    /*
+     * It prints the original expression as is,
+     * then passes the expression to the recursiveSolve method to start the actual calculation and returns its result.
+     * @author Arda Dülger
+     * @param expression The mathematical expression that needs to be solved.
+     * @return The final calculated result of the expression.
+     */
+    public static double evaluateAndPrintSteps (String expression){
+        System.out.println(expression);
+        return recursiveSolve(expression);
+    }
+
+    /*
+     * The goal is to reduce the given string expression to a single numerical value by applying the rules of
+     * mathematical order of operations (first parentheses, then multiplication/division, last addition/subtraction).
+     * @author Arda Dülger
+     * @param expression A string of mathematical expressions to be solved.This string can be the expression initially entered by the user,
+     * or it can be an intermediate expression solved and simplified in a previous step.
+     * return numeric value,If the expression reduces entirely to a number, it returns that number (terminates the recursion).
+     * @return recursivesolve() Sends the simplified expression back to the recursiveSolve method and returns the result of this new call.
+     */
+    private static double recursiveSolve (String expression){
+
+        //Step-by-step printing logic is implemented in this method.
+
+        // Basic Condition Check: Is the expression just a number?
+        // If it's just a number, the calculation is complete, return it immediately.
+        try {
+            return Double.parseDouble(expression);
+        } catch (NumberFormatException ignored) {}
+
+        // Parentheses Handling: The logic for finding the DEEPEST parentheses is preserved.
+        int balance = 0;
+        int OpenParent = -1;
+        int CloseParent = -1;
+        int nestingLevel = 0;
+
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (c == '(') {
+                balance++;
+                if (balance > nestingLevel) {
+                    nestingLevel = balance;
+                    OpenParent = i;
+                }
+            } else if (c == ')') {
+                if (balance == nestingLevel) {
+                    CloseParent = i;
+                    break;
+                }
+                balance--;
+            }
+        }
+
+        if (OpenParent != -1 && CloseParent != -1 && CloseParent > OpenParent) {
+            String innerExpression = expression.substring(OpenParent + 1, CloseParent);
+            double innerResult = recursiveSolve(innerExpression);
+            String resultStr = String.format("%.2f", innerResult);
+            int endIndex = resultStr.length() - 1; //Removing unnecessary zeros from the last part.
+
+            //Skip all trailing zeros
+
+            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
+                endIndex--;
+            }
+
+            //Truncate the string by length.
+            resultStr = resultStr.substring(0, endIndex + 1);
+            //If the string ends with a dot, remove it.
+            if (resultStr.endsWith(".")) {
+                resultStr = resultStr.substring(0, resultStr.length() - 1);
+            }
+
+            String newExpression = expression.substring(0, OpenParent) + resultStr + expression.substring(CloseParent + 1);
+
+            System.out.println("= " + newExpression);
+
+            return recursiveSolve(newExpression);
+        }
+
+        int splitIndex = -1;
+
         for (int i = expression.length() - 1; i >= 0; i--) {
             char c = expression.charAt(i);
-            if (isOperator(c) && takePriority(c) == 2) {
+            if (isOperator(c) && takePriority(c) == 1) {
+                if (c == '-' && (i == 0 || expression.charAt(i - 1) == '(' || isOperator(expression.charAt(i - 1)))) {
+                    continue;
+                }
                 splitIndex = i;
                 break;
             }
         }
-    }
 
-
-    //  Calculation
-    if (splitIndex != -1) {
-        char operator = expression.charAt(splitIndex);
-        String leftPart = expression.substring(0, splitIndex);
-        String rightPart = expression.substring(splitIndex + 1);
-
-
-        double leftValue = recursiveSolve(leftPart);
-        double rightValue = recursiveSolve(rightPart);
-
-        double result = 0;
-        if (operator == '+') result = leftValue + rightValue;
-        else if (operator == '-') result = leftValue - rightValue;
-        else if (operator == 'x') result = leftValue * rightValue;
-        else if (operator == ':') {
-            if (rightValue == 0) throw new IllegalArgumentException("Error for division by zero");
-            result = leftValue / rightValue;
-        }
-
-
-        String resultStr = String.format("%.10f", result)
-                .replaceAll("(\\.\\d*?)0+$", "$1")
-                .replaceAll("\\.$", "");
-
-
-
-
-        if (expression.equals(leftPart + operator + rightPart)) {
-
-            System.out.println("= " + resultStr);
-            return recursiveSolve(resultStr);
-        }
-
-
-        String newExpression = resultStr;
-
-        // To show step
-        System.out.println("= " + newExpression);
-
-        // Recursion to solve new expression.
-        return recursiveSolve(newExpression);
-    }
-
-    //  Final check
-
-    try {
-        return Double.parseDouble(expression);
-    } catch (NumberFormatException e) {
-
-        throw new IllegalArgumentException("Invalid expression; " + expression);
-    }
-}
-
-// Main method and user login (main method in expressioncontroller)
-public static void expressioncontroller () {
-
-    String input;
-
-    System.out.println("Expression Evaluation Program: Step by Step (Type 'exit' to exit)");
-
-    while (true) {
-        System.out.print("Enter the expression: ");
-        input = scanner.nextLine().trim();
-
-        // Exit command control
-        if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("3")) {
-            System.out.println("Returning to Secondary School menu...");
-            break;
-        }
-
-        if (isValidExpression(input)) {
-            try {
-                System.out.println("\n-- Solution with step by step --\n");
-
-                // Virgülleri noktaya çevirerek ifadeyi evaluate etmek için hazırlayın.
-                String processedInput = input.replaceAll(" ", "").replace(',', '.');
-                double finalResult = evaluateAndPrintSteps(processedInput);
-
-                System.out.printf("Final result = %.2f%n", finalResult);
-                System.out.println("\n--- END  ---\n");
-            } catch (IllegalArgumentException e) {
-                System.out.println("retry to enter valid expression. (" + e.getMessage() + ")");
-            } catch (Exception e) {
-                System.out.println("retry to enter valid expression. (Unexpected error)");
+        // If addition/subtraction is not found, search for multiplication/division (Rightmost)
+        if (splitIndex == -1) {
+            for (int i = expression.length() - 1; i >= 0; i--) {
+                char c = expression.charAt(i);
+                if (isOperator(c) && takePriority(c) == 2) {
+                    splitIndex = i;
+                    break;
+                }
             }
-        } else {
-            System.out.println("retry to enter valid expression.");
+        }
+
+        //  Calculation
+        if (splitIndex != -1) {
+            char operator = expression.charAt(splitIndex);
+            String leftPart = expression.substring(0, splitIndex);
+            String rightPart = expression.substring(splitIndex + 1);
+
+            double leftValue = recursiveSolve(leftPart);
+            double rightValue = recursiveSolve(rightPart);
+
+            double result = 0;
+            if (operator == '+') result = leftValue + rightValue;
+            else if (operator == '-') result = leftValue - rightValue;
+            else if (operator == 'x') result = leftValue * rightValue;
+            else if (operator == ':') {
+                if (rightValue == 0) throw new IllegalArgumentException("Error for division by zero");
+                result = leftValue / rightValue;
+            }
+
+            String resultStr = String.format("%.2f", result);
+            int endIndex = resultStr.length() - 1;
+
+            // It will skip the zeros at the end.
+            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
+                endIndex--;
+            }
+            resultStr = resultStr.substring(0, endIndex + 1);
+            if (resultStr.endsWith(".")) {
+                resultStr = resultStr.substring(0, resultStr.length() - 1);
+            }
+
+            if (expression.equals(leftPart + operator + rightPart)) {
+
+                System.out.println("= " + resultStr);
+                return recursiveSolve(resultStr);
+            }
+
+            String newExpression = resultStr;
+
+            // To show step
+            System.out.println("= " + newExpression);
+
+            // Recursion to solve new expression.
+            return recursiveSolve(newExpression);
+        }
+
+        //  Final check
+
+        try {
+            return Double.parseDouble(expression);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid expression; " + expression);
         }
     }
-}
 
+    // Main method and user login (main method in expressioncontroller)
 
+    /*
+    * Its basic function is to continuously receive mathematical expressions from the user,
+    * verify them, calculate them and print the results to the screen.
+    * @author Arda Dülger
+    * @param hasn`t parameters,
+    * @return The function doesn't return any value to the caller.
+     */
+    public static void expressioncontroller () {
 
+        String input;
+        Locale.setDefault(Locale.US);
+        System.out.println("Expression Evaluation Program: Step by Step (Type 'exit' to exit)");
 
-// ===========================================
-//             OPTION C - HIGH SCHOOL
-// ===========================================
+        while (true) {
+            System.out.print("Enter the expression: ");
+            input = scanner.nextLine().trim();
 
-// Option C Submenu
-private static void subMenuOptionC () {
-}
+            // Exit command control
+            if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("3")) {
+                System.out.println("Returning to Secondary School menu...");
+                break;
+            }
 
-// Option C Task 1: Array Statistics Main Code
-private static void arrayStatisticsTask () {
-}
+            if (isValidExpression(input)) {
+                try {
+                    System.out.println("\n-- Solution with step by step --\n");
 
-// Option C Task C2: Distance Between Two Arrays Main Code
-private static void arrayDistanceTask () {
-}
+                    // Prepares the expression for evaluation by converting commas to periods.
+                    char[] tempChars = input.toCharArray();
+                    int newLength = 0;
+                    for (int i = 0; i < input.length(); i++) {
+                        char c = input.charAt(i);
+                        if (c == ' ') {
+                            continue;
+                        }
+                        else if (c == ',') {
+                            tempChars[newLength] = '.';
+                            newLength++;
+                        }
+                        else {
+                            tempChars[newLength] = c;
+                            newLength++;
+                        }
+                    }
+                    String processedInput = new String(tempChars,0, newLength);
 
-// ===========================================
-//             OPTION D - UNIVERSITY
-// ===========================================
+                    double finalResult = evaluateAndPrintSteps(processedInput);
+                    System.out.printf("Final result = %.2f%n", finalResult);
+                    System.out.println("\n--- END(ENTER `EXIT TO RETURN MAIN MENU`  ---\n");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("retry to enter valid expression.`Exit`for return menu (" + e.getMessage() + ")");
+                } catch (Exception e) {
+                    System.out.println("retry to enter valid expression. (Unexpected error) `Exit`for return menu");
+                }
+            } else {
+                System.out.println("retry to enter valid expression.`Exit`for return menu");
+            }
+        }
+    }
 
-// Connect Four Game Main Code
-static char[][] C4_BOARD;
+    // ===========================================
+    //             OPTION C - HIGH SCHOOL
+    // ===========================================
+
+    // Option C Submenu
+    private static void subMenuOptionC () {
+    }
+
+    // Option C Task 1: Array Statistics Main Code
+    /*
+     * Prompts the user to define an array, validates the size and elements,
+     * calculates various statistical measures (Median, Arithmetic, Geometric, and Harmonic Means),
+     * and prints the formatted results to the console.
+     * @author Zafer Mert Serinken
+     */
+    private static void arrayStatisticsTask() {
+        int size = 0;
+
+        // Determining size of the array
+        do {
+            System.out.print("Enter the size of the array: ");
+            if (scanner.hasNextInt()) {
+                size = scanner.nextInt();
+                if (size <= 0) {
+                    System.out.println("Array size must be a positive integer. Please try again.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter an integer for the size.");
+                scanner.next();
+                size = 0;
+            }
+        } while (size <= 0);
+        scanner.nextLine();
+
+        double[] array = new double[size];
+
+        // Determining the elements of the array
+        System.out.println("\n--- Enter array elements with double values ---");
+        for (int i = 0; i < size; i++) {
+            boolean isValid = false;
+            while (!isValid) {
+                System.out.print("Enter element " + (i + 1) + "/" + size + ": ");
+                if (scanner.hasNextDouble()) {
+                    array[i] = scanner.nextDouble();
+                    isValid = true;
+                } else {
+                    System.out.println("Invalid input. Please enter a double value (e.g., 3,14 or 3.14 depending on your locale).");
+                    scanner.next();
+                }
+            }
+        }
+        scanner.nextLine(); // Clean up the remaining newline
+
+        System.out.println("\n--- Results for Array: " + Arrays.toString(array) + " ---");
+
+        double median = calculateMedian(array);
+        double arithmeticMean = calculateArithmeticMean(array);
+        double geometricMean = calculateGeometricMean(array);
+        double harmonicMean = calculateHarmonicMean(array);
+
+        // Print the results with format (2 digits after the decimal point)
+        System.out.printf("Median: %.2f\n", median);
+        System.out.printf("Arithmetic Mean: %.2f\n", arithmeticMean);
+        System.out.printf("Geometric Mean: %.2f\n", geometricMean);
+        System.out.printf("Harmonic Mean: %.2f\n", harmonicMean);
+
+        System.out.println("\nPress ENTER to return to the High School menu...");
+        scanner.nextLine();
+    }
+
+    /*
+     * Calculates the statistical median of a given array of double values
+     * @author Zafer Mert Serinken
+     * @param array The array of double values used for calculating the median.
+     * @return The calculated median value as a double.
+     */
+    public static double calculateMedian(double[] array) {
+        // We create a copy and sort it to avoid damaging the original array
+        double[] sortedArray = Arrays.copyOf(array, array.length);
+        Arrays.sort(sortedArray);
+        int n = sortedArray.length;
+
+        if (n % 2 != 0) { // If the array size is odd the middle element is the median
+            return sortedArray[n / 2];
+        } else { // If the array size is even The average of the middle two elements is the median
+            int mid1 = n / 2 - 1;
+            int mid2 = n / 2;
+            return (sortedArray[mid1] + sortedArray[mid2]) / 2.0;
+        }
+    }
+
+    /*
+     * Calculates the Mean of the elements in a given array.
+     * @author Zafer Mert Serinken
+     * @param array Values of the array used for calculating the mean.
+     * @return The calculated arithmetic mean as a double.
+     */
+    public static double calculateArithmeticMean(double[] array) {
+        double sum = 0;
+        for (double num : array) {
+            sum += num;
+        }
+        return sum / array.length;
+    }
+
+    /*
+     * Calculates the Geometric Mean ean of the elements in a given array.
+     * @author Zafer Mert Serinken
+     * @param array Values of the array used for calculating the geometric mean.
+     * @return The calculated geometric mean as a double.
+     */
+    public static double calculateGeometricMean(double[] array) {
+        double product = 1.0;
+        for (double num : array) {
+            product *= num;
+        }
+        return Math.pow(product, 1.0 / array.length);
+    }
+
+    /*
+     * Calculates the Harmonic Mean of the elements in a given array.
+     * @author Zafer Mert Serinken
+     * @param array Values of the array used for calculating the harmonic mean.
+     * @return The calculated harmonic mean as a double.
+     */
+    public static double calculateHarmonicMean(double[] array) {
+        // Call the recursive method to calculate the denominator (1/x1 + 1/x2 ...).
+        double sumOfReciprocals = recursiveSumReciprocals(array, array.length);
+        if (sumOfReciprocals == 0) {
+            return 0.0;
+        }
+        return array.length / sumOfReciprocals;
+    }
+
+    /*
+     * Recursively calculates the sum of the reciprocals (1/x) for all elements in the specified portion of the array.
+     * @author Zafer Mert Serinken
+     * @param array The array containing the double values.
+     * @param n The number of elements to process, starting from the end of the array. This is the stopping condition for the recursion.
+     * @return The calculated sum of the reciprocals of the first 'n' elements.
+     */
+    private static double recursiveSumReciprocals(double[] array, int n) {
+        if (n == 0) { // Base case
+            return 0;
+        }
+        // Recursive Step: Reverse the last element of the array (1/x)
+        // and call yourself again for the remaining part of the array (n-1).
+        return (1.0 / array[n - 1]) + recursiveSumReciprocals(array, n - 1);
+    }
+
+    // Option C Task C2: Distance Between Two Arrays Main Code
+
+    /*
+     * Function allows the user to input two integer arrays of equal size (elements should be in the interval 0–9)
+     * It calculates Manhattan Distance, Euclidean Distance, and Cosine Similarity
+     * It gives user input, performs calculations, and displays formatted results.
+     * @return There is no return because it is a void function.
+     * @author Selçuk Aloba & Arda Dülger
+     */
+    private static void arrayDistanceTask()
+    {
+        int size = 0;
+
+        do {
+            System.out.print("Enter the size for the arrays (e.g., 5): ");
+            if (scanner.hasNextInt()) {
+                size = scanner.nextInt();
+                if (size <= 0)
+                {
+                    System.out.println("Dimension must be a positive number. Please try again.");
+                }
+            }
+            else
+            {
+                System.out.println("Invalid input. Please enter an integer.");
+                scanner.next();
+                size = 0;
+            }
+        } while (size <= 0);
+
+        scanner.nextLine();
+
+        int[] array1 = new int[size];
+        int[] array2 = new int[size];
+
+        System.out.println("\n--- Enter elements for the first array in [0,9] ---");
+        for (int i = 0; i < size; i++) {
+            int element;
+            boolean isValid;
+
+            do {
+                System.out.print("Enter element at index " + i + " (must be 0-9): ");
+                if (scanner.hasNextInt()) {
+                    element = scanner.nextInt();
+                    if (element >= 0 && element <= 9)
+                    {
+                        array1[i] = element;
+                        isValid = true;
+                    }
+                    else
+                    {
+                        System.out.println("Invalid entry. Number must be between 0 and 9.");
+                        isValid = false;
+                    }
+                }
+                else
+                {
+                    System.out.println("Invalid entry. Please enter an integer.");
+                    scanner.next();
+                    element = -1;
+                    isValid = false;
+                }
+            } while (!isValid);
+        }
+
+        scanner.nextLine();
+
+        System.out.println("\n--- Enter elements for the second array ---");
+        for (int i = 0; i < size; i++) {
+            int element;
+            boolean isValid;
+
+            do {
+                System.out.print("Enter element at index " + i + " (must be 0-9): ");
+                if (scanner.hasNextInt()) {
+                    element = scanner.nextInt();
+                    if (element >= 0 && element <= 9)
+                    {
+                        array2[i] = element;
+                        isValid = true;
+                    }
+                    else
+                    {
+                        System.out.println("Invalid entry. Number must be between 0 and 9.");
+                        isValid = false;
+                    }
+                }
+                else
+                {
+                    System.out.println("Invalid entry. Please enter an integer.");
+                    scanner.next();
+                    element = -1;
+                    isValid = false;
+                }
+            } while (!isValid );
+        }
+
+        scanner.nextLine();
+
+        System.out.println("\nCalculating distances for:");
+        System.out.println("Array 1: " + Arrays.toString(array1));
+        System.out.println("Array 2: " + Arrays.toString(array2));
+
+        double manhattan = calculateManhattanDistance(array1, array2);
+        System.out.printf("Manhattan Distance: %.2\n", manhattan);
+
+        double euclidean = calculateEuclideanDistance(array1, array2);
+        System.out.printf("Euclidean Distance: %.2f\n", euclidean);
+
+        double cosine = calculateCosineSimilarity(array1, array2);
+        System.out.printf("Cosine Similarity: %.2f\n", cosine);
+
+        System.out.println("\nPress ENTER to return to the High School menu...");
+        scanner.nextLine();
+    }
+
+    /*
+     * Calculates the Manhattan Distance between two arrays.
+     * Formula: |a1 - b1| + |a2 - b2| + ... + |an - bn|
+     * @param a First integer array.
+     * @param b Second integer array.
+     * @return The total Manhattan Distance as a double value.
+     */
+    public static double calculateManhattanDistance(int[] a, int[] b)
+    {
+        double sum = 0; //total distance
+        for (int i = 0; i < a.length; i++)
+        {
+            sum += Math.abs(a[i] - b[i]);
+        }
+        return sum;
+    }
+
+    /*
+     * Calculates the Euclidean Distance between two arrays.
+     * Formula: √((a1 - b1)² + (a2 - b2)² + ... + (an - bn)²)
+     * @param a First integer array.
+     * @param b Second integer array.
+     * @return The Euclidean Distance as a double value.
+     */
+    public static double calculateEuclideanDistance(int[] a, int[] b)
+    {
+        double sumOfSquares = 0;
+        for (int i = 0; i < a.length; i++) {
+            sumOfSquares += Math.pow(a[i] - b[i], 2);
+        }
+        return Math.sqrt(sumOfSquares);
+    }
+
+    /*
+     * It calculates the Cosine Similarity between two arrays.
+     * Formula: (A · B) / (|A| × |B|)
+     * It shows how similar the two arrays are in direction (not magnitude).
+     * @param a first integer array
+     * @param b second integer array
+     * @return The Cosine Similarity value in range [0, 1]. Returns 0 if a or b is a zero vector.
+     */
+    public static double calculateCosineSimilarity(int[] a, int[] b) {
+        double Product = 0.0;
+        double valA = 0.0;
+        double valB = 0.0;
+
+        for (int i = 0; i < a.length; i++) {
+            Product += a[i] * b[i];
+            valA += Math.pow(a[i], 2);
+            valB += Math.pow(b[i], 2);
+        }
+
+        valA = Math.sqrt(valA);
+        valB = Math.sqrt(valB);
+
+        if (valA == 0.0 || valB == 0.0) {
+            return 0.0;
+        }
+        return Product / (valA * valB);
+    }
+
+    // ===========================================
+    //             OPTION D - UNIVERSITY
+    // ===========================================
+  
+    // Connect Four Game Main Code
+    static char[][] C4_BOARD;
     static int C4_ROWS, C4_COLS;
     static char C4_CURRENT;
     static boolean C4_VS_AI = false;
