@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -1233,7 +1233,38 @@ public class Main
     // ===========================================
 
     // Option C Submenu
-    private static void subMenuOptionC () {
+    private static void subMenuOptionC() {
+        int choice = 0;
+        do {
+            System.out.println("\n=== OPTION C: HIGH SCHOOL ===");
+            System.out.println("1-) Array Statistics");
+            System.out.println("2-) Distance Between Two Arrays");
+            System.out.println("3-) Return to Main Menu");
+            System.out.print("Your choice: ");
+
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n Running Task C1...");
+                        arrayStatisticsTask();
+                        break;
+                    case 2:
+                        System.out.println("\n Running Task C2...");
+                        arrayDistanceTask();
+                        break;
+                    case 3:
+                        System.out.println("Returning to Main Menu...\n");
+                        break;
+                    default:
+                        System.out.println("Please enter a number between 1 and 3.");
+                }
+            } else {
+                System.out.println("❌ Invalid input. Please enter a number.");
+                scanner.nextLine();
+            }
+        } while (choice != 3);
     }
 
     // Option C Task 1: Array Statistics Main Code
@@ -1241,7 +1272,7 @@ public class Main
      * Prompts the user to define an array, validates the size and elements,
      * calculates various statistical measures (Median, Arithmetic, Geometric, and Harmonic Means),
      * and prints the formatted results to the console.
-     * @author Zafer Mert Serinken
+     * @author Zafer Mert Serinken and Eren Çakır Bircan
      */
     private static void arrayStatisticsTask() {
         int size = 0;
