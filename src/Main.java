@@ -17,7 +17,7 @@ public class Main
         System.out.println("Program terminated.");
     }
 
-    // === MATRIX RAIN SABİTLERİ ===
+    // === MATRIX RAIN CONSTANTS ===
     static final String ANSI_RESET = "\u001B[0m";
     static final String ANSI_CLEAR = "\u001B[2J";
     static final String ANSI_HOME  = "\u001B[H";
