@@ -486,7 +486,7 @@ public class Main
      * @author Eren Çakır Bircan
      * @param day The birth day.
      * @param month The birth month (1-12).
-     * @param year The birth year.
+     * @param year The birth year (0-2025=.
      */
     private static void calculateAge(int day, int month, int year) {
         int currentYear = getCurrentYear();
