@@ -317,8 +317,8 @@ public class Main
                 if (year == -44444444) {
                     System.out.println("Exiting from month input...");
                     return -1;
-                }if (year < 0 || year > currentYear) {
-                    System.out.println("Invalid year. Please enter a year between 1900 and " + currentYear + ".");
+                }else if (year < 0 || year > currentYear) {
+                    System.out.println("Invalid year. Please enter a year between 0 and " + currentYear + ".");
                 }
             } else {
                 System.out.println("Invalid input. Please enter a whole number for the year.");
