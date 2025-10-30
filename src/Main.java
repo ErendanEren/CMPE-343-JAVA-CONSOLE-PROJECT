@@ -374,29 +374,31 @@ public class Main
      * @return A valid day number or enter -44444444 for exit condition.
      */
     private static int getDay(Scanner input, int month, int year) {
-        int maxDay = daysInMonth(month, year);
-        int day = 0;
+    int maxDay = daysInMonth(month, year);
+    int day = 0;
 
-        do {
-            System.out.print("Enter the day of your birthday (1-" + maxDay + "): ");
+    do {
+        System.out.print("Enter the day of your birthday (1-" + maxDay + ") or -44444444 to exit: ");
 
-            if (input.hasNextInt()) {
-                day = input.nextInt();
-                input.nextLine();
-                if (month == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                } else if (day < 1 || day > maxDay) {
-                    System.out.println(" Invalid day. Please enter a number between 1 and " + maxDay + " for " + monthToName(month) + ".");
-                }
-            } else {
-                System.out.println(" Invalid input. Please enter a whole number for the day.");
-                input.nextLine();
+        if (input.hasNextInt()) {
+            day = input.nextInt();
+            input.nextLine(); // buffer temizle
+
+            if (day == -44444444) {
+                System.out.println("Exiting from day input...");
+                return -1; // çıkış kodu
+            } else if (day < 1 || day > maxDay) {
+                System.out.println(" Invalid day. Please enter a number between 1 and "
+                        + maxDay + " for " + monthToName(month) + ".");
             }
-        } while (day < 1 || day > maxDay);
+        } else {
+            System.out.println(" Invalid input. Please enter a whole number for the day.");
+            input.nextLine(); // geçersiz girdiyi temizle
+        }
+    } while (day < 1 || day > maxDay);
 
-        return day;
-    }
+    return day;
+}
 
     /**
      * Calculates the number of days in a given month for a specific year for dates.
