@@ -65,6 +65,7 @@ public class Main
                 char[][] screen = new char[height][width];
                 for (int r = 0; r < height; r++) {
                     java.util.Arrays.fill(screen[r], ' ');
+
                 }
 
                 for (int c = 0; c < width; c++) {
@@ -314,18 +315,16 @@ public class Main
                 year = input.nextInt();
                 input.nextLine();
 
-                if (year == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                }else if (year < 0 || year > currentYear) {
+                if (year < 0 || year > currentYear) {
                     System.out.println("Invalid year. Please enter a year between 0 and " + currentYear + ".");
                 }
+
             } else {
                 System.out.println("Invalid input. Please enter a whole number for the year.");
-                input.nextLine();
+                input.nextLine(); // hatalı girişi temizler
             }
 
-        } while (year < 1900 || year > currentYear);
+        } while (year < 0 || year > currentYear);
 
         return year;
     }
@@ -334,7 +333,7 @@ public class Main
      * Prompts the user to enter a valid birth month even if user enter wrong number.
      * @author Eren Çakır Bircan
      * @param input Scanner object for user input.
-     * @return A valid month number or enter -44444444 for exit condition.
+     * @return A valid month number.
      */
 
     private static int getMonth(Scanner input) {
@@ -343,25 +342,24 @@ public class Main
         do {
             System.out.print("Enter the birth month number (1 for Jan, 12 for Dec): ");
 
-            if (input.hasNextInt()){
+            if (input.hasNextInt()) {
                 month = input.nextInt();
                 input.nextLine();
 
-                if (month == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                }else if (month < 1 || month > 12){
-                    System.out.println(" Invalid month. Please enter a number between 1 and 12.");
+                if (month < 1 || month > 12) {
+                    System.out.println("Invalid month. Please enter a number between 1 and 12.");
                 }
+
             } else {
-                System.out.println(" Invalid input. Please enter a whole number for the month.");
-                input.nextLine();
+                System.out.println("Invalid input. Please enter a whole number for the month.");
+                input.nextLine(); // hatalı girişi temizler
             }
 
-        } while(month < 1 || month > 12);
+        } while (month < 1 || month > 12);
 
         String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
+
         System.out.println("Selected month is " + monthNames[month] + ".");
 
         return month;
@@ -383,16 +381,17 @@ public class Main
             if (input.hasNextInt()) {
                 day = input.nextInt();
                 input.nextLine();
-                if (month == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                } else if (day < 1 || day > maxDay) {
-                    System.out.println(" Invalid day. Please enter a number between 1 and " + maxDay + " for " + monthToName(month) + ".");
+
+                if (day < 1 || day > maxDay) {
+                    System.out.println("Invalid day. Please enter a number between 1 and "
+                            + maxDay + " for " + monthToName(month) + ".");
                 }
+
             } else {
-                System.out.println(" Invalid input. Please enter a whole number for the day.");
-                input.nextLine();
+                System.out.println("Invalid input. Please enter a whole number for the day.");
+                input.nextLine(); // hatalı girdiyi temizler
             }
+
         } while (day < 1 || day > maxDay);
 
         return day;
@@ -2179,6 +2178,12 @@ public class Main
     static String C4_COLOR_X = C4_RED;
     static String C4_COLOR_O = C4_BLUE;
 
+    /**
+     * Main menu loop for Connect Four Game.
+     * Lets the user choose PvP, vs AI, or return to main menu.
+     *
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static void connectFourGame() {
         while (true) {
             System.out.println("\n--- CONNECT FOUR ---");
@@ -2202,6 +2207,14 @@ public class Main
         }
     }
 
+    /**
+     * Sets up a two-player (player vs player) game.
+     * Reads player names, selects board size, initializes the board, and sets ● to start.
+     *
+     * @return true if setup completed; false if the user went back.
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
+
     private static boolean c4SetupPVP() {
         System.out.print("Enter name for Player 1 (Red ●): ");
         C4_P1_NAME = scanner.nextLine().trim();
@@ -2220,6 +2233,14 @@ public class Main
         return true;
     }
 
+    /**
+     * Sets up a human vs AI game.
+     * Asks for player name, let the user pick a color and selects board size.
+     * Then initializes the board, assigns the AI side, and sets the starting player.
+     *
+     * @return true if setup completed, false if the user went back.
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static boolean c4SetupAI() {
         System.out.print("Enter your name: ");
         C4_P1_NAME = scanner.nextLine().trim();
@@ -2242,6 +2263,14 @@ public class Main
         return true;
     }
 
+    /**
+     * Asks the human to choose a color (red/blue) and maps it to the side ●.
+     * Also sets the display colors for both sides.
+     * Uses red and blue bullet symbols (●) instead of X and O during display.
+     *
+     * @return 'X' if the human plays X; 'O' if the human plays O .
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static char c4AskColorAndAssign() {
         while (true) {
             System.out.print("Choose your color [red/blue]: ");
@@ -2264,6 +2293,12 @@ public class Main
         }
     }
 
+    /**
+     * Lets the user choose one of the board sizes and initializes the board array for game.
+     *
+     * @return true if a size was chosen and the board was initialized, false to go back.
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static boolean c4ChooseSizeAndInit() {
         while (true) {
             System.out.println("\nSelect Board Size:");
@@ -2298,6 +2333,13 @@ public class Main
         return true;
     }
 
+    /**
+     * Main game loop for a single match.
+     * Alternates turns, gets a valid move (or AI move), drops a disk, checks win and tie condition,
+     * prints the final result, and waits for input ENTER to return to the menu.
+     *
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static void c4RunLoop() {
         boolean win = false;
         int turn = 1, maxTurns = C4_ROWS * C4_COLS;
@@ -2338,6 +2380,13 @@ public class Main
         scanner.nextLine();
     }
 
+    /**
+     * Gets the current player's chosen column and provides it's valid.
+     * prevents from putting fisk to full or out-of-range columns before returning a valid index.
+     *
+     * @return zero-based column index for the next move
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static int c4GetValidMove() {
         while (true) {
             String name = (C4_CURRENT == 'X') ? C4_P1_NAME : C4_P2_NAME;
@@ -2363,6 +2412,12 @@ public class Main
         }
     }
 
+    /**
+     * Drops the current player's disk into the given column at the lowest empty row based on users input.
+     *
+     * @param col zero-based column index
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static void c4Drop(int col) {
         for (int r = C4_ROWS - 1; r >= 0; r--) {
             if (C4_BOARD[r][col] == ' ') {
@@ -2372,6 +2427,13 @@ public class Main
         }
     }
 
+
+    /**
+     * Renders the current board state to the console using box-drawing characters
+     * and colored bullet symbols (●) instead of X and O to represent players.
+     *
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static void c4PrintBoard() {
         System.out.println();
         System.out.print("  ");
@@ -2421,7 +2483,14 @@ public class Main
         }
         System.out.println("┛\n");
     }
-
+    /**
+     * Checks if the player has four in a row horizontally, vertically, or diagonally.
+     * Uses red and blue bullet symbols (●) instead of X and O during display.
+     *
+     * @param p the player symbol ('X' or 'O')
+     * @return true if p has a winning line; false otherwise
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static boolean c4CheckWin(char p) {
         // Horizontal
         for (int r = 0; r < C4_ROWS; r++)
@@ -2452,6 +2521,17 @@ public class Main
     private static char c4AI_getSide() { return C4_AI_SIDE; }
 
 
+    /**
+     * Picks the best column for the AI using a depth-limited minimax search.
+     * Breaks ties randomly among equally good moves.
+     *
+     * @param b     board array
+     * @param rows  number of rows
+     * @param cols  number of columns
+     * @param depth search depth (plies)
+     * @return zero-based column index for the AI move; 0 if no legal move found
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static int c4AI_bestMove(char[][] b, int rows, int cols, int depth) {
         java.util.List<Integer> bestColumns = new java.util.ArrayList<>();
         int bestScore = Integer.MIN_VALUE;
@@ -2459,7 +2539,7 @@ public class Main
         for (int c = 0; c < cols; c++) {
             if (b[0][c] != ' ') continue; //
 
-            int r = c4AI_findNextRow(b, rows, c);
+            int r = c4AI_FindNextRow(b, rows, c);
             if (r == -1) continue;
 
             b[r][c] = C4_AI_SIDE;
@@ -2481,12 +2561,23 @@ public class Main
         return bestColumns.get(new java.util.Random().nextInt(bestColumns.size()));
     }
 
-
+    /**
+     * Minimax search with simple terminal evaluation:
+     * +1000 for AI win (minus depth), −1000 for opponent win (plus depth), 0 at depth limit or full board.
+     *
+     * @param b     board array
+     * @param rows  number of rows
+     * @param cols  number of columns
+     * @param depth remaining depth
+     * @param isMax true if maximizing (AI turn); false if minimizing (opponent turn)
+     * @return score from the current position for the AI
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static int c4AI_minimax(char[][] b, int rows, int cols, int depth, boolean isMax) {
         char opponent = (C4_AI_SIDE == 'X') ? 'O' : 'X';
 
-        if (c4AI_hasWon(b, rows, cols, C4_AI_SIDE)) return 1000 - depth;
-        if (c4AI_hasWon(b, rows, cols, opponent)) return -1000 + depth;
+        if (c4AI_Won(b, rows, cols, C4_AI_SIDE)) return 1000 - depth;
+        if (c4AI_Won(b, rows, cols, opponent)) return -1000 + depth;
 
         if (depth == 0 || c4AI_isFull(b, cols)) return 0;
 
@@ -2494,7 +2585,7 @@ public class Main
             int best = Integer.MIN_VALUE;
             for (int c = 0; c < cols; c++) {
                 if (b[0][c] != ' ') continue;
-                int r = c4AI_findNextRow(b, rows, c);
+                int r = c4AI_FindNextRow(b, rows, c);
                 if (r == -1) continue;
 
                 b[r][c] = C4_AI_SIDE;
@@ -2508,7 +2599,7 @@ public class Main
             int best = Integer.MAX_VALUE;
             for (int c = 0; c < cols; c++) {
                 if (b[0][c] != ' ') continue;
-                int r = c4AI_findNextRow(b, rows, c);
+                int r = c4AI_FindNextRow(b, rows, c);
                 if (r == -1) continue;
 
                 b[r][c] = opponent;
@@ -2521,8 +2612,18 @@ public class Main
         }
     }
 
-
-    private static boolean c4AI_hasWon(char[][] b, int rows, int cols, char p) {
+    /**
+     * Checks if player p has a connect-four on a given board.
+     * Uses red and blue bullet symbols (●) instead of X and O during display.
+     *
+     * @param b    board array
+     * @param rows number of rows
+     * @param cols number of columns
+     * @param p    player symbol ('X' or 'O')
+     * @return true if p has won; false otherwise
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
+    private static boolean c4AI_Won(char[][] b, int rows, int cols, char p) {
         // Horizontical
         for (int r = 0; r < rows; r++)
             for (int c = 0; c <= cols - 4; c++)
@@ -2550,13 +2651,30 @@ public class Main
         return false;
     }
 
-    private static int c4AI_findNextRow(char[][] b, int rows, int col) {
+    /**
+     * Finds the next free row in a column (the drop position).
+     *
+     * @param b    board array
+     * @param rows number of rows
+     * @param col  zero-based column index
+     * @return the row index to place a disk, or -1 if the column is full
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
+    private static int c4AI_FindNextRow(char[][] b, int rows, int col) {
         for (int r = rows - 1; r >= 0; r--) {
             if (b[r][col] == ' ') return r;
         }
         return -1;
     }
 
+    /**
+     * Checks if the board has no free cells in the top row (i.e., no legal moves).
+     *
+     * @param b    board array
+     * @param cols number of columns
+     * @return true if the board is full; false otherwise
+     * @author Eren Çakır Bircan, Zafer Mert Serinken, Arda Dülger, Selçuk Aloba
+     */
     private static boolean c4AI_isFull(char[][] b, int cols) {
         for (int c = 0; c < cols; c++) {
             if (b[0][c] == ' ') return false;
