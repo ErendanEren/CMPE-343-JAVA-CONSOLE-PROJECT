@@ -301,71 +301,68 @@ public class Main
      * Prompts the user to enter a valid year month even if user enter wrong number.
      * @author Eren Çakır Bircan
      * @param input Scanner object for user input.
-     * @return A valid year number or enter -44444444 for exit condition.
+     * @return A valid year number.
      */
     private static int getYear(Scanner input) {
-        int currentYear = getCurrentYear();
-        int year = -1;
+    int currentYear = getCurrentYear();
+    int year = -1;
 
-        do {
-            System.out.print("Enter your birth year (0 to " + currentYear + "): ");
+    do {
+        System.out.print("Enter your birth year (0 to " + currentYear + "): ");
 
-            if (input.hasNextInt()) {
-                year = input.nextInt();
-                input.nextLine();
+        if (input.hasNextInt()) {
+            year = input.nextInt();
+            input.nextLine();
 
-                if (year == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                }else if (year < 0 || year > currentYear) {
-                    System.out.println("Invalid year. Please enter a year between 0 and " + currentYear + ".");
-                }else {
-                System.out.println("Invalid input. Please enter a whole number for the year.");
-                input.nextLine();
-                }
+            if (year < 0 || year > currentYear) {
+                System.out.println("Invalid year. Please enter a year between 0 and " + currentYear + ".");
             }
 
-        } while (year < 0 || year > currentYear);
+        } else {
+            System.out.println("Invalid input. Please enter a whole number for the year.");
+            input.nextLine(); // hatalı girişi temizler
+        }
 
-        return year;
-    }
+    } while (year < 0 || year > currentYear);
+
+    return year;
+}
 
     /**
      * Prompts the user to enter a valid birth month even if user enter wrong number.
      * @author Eren Çakır Bircan
      * @param input Scanner object for user input.
-     * @return A valid month number or enter -44444444 for exit condition.
+     * @return A valid month number.
      */
 
     private static int getMonth(Scanner input) {
-        int month = 0;
+    int month = 0;
 
-        do {
-            System.out.print("Enter the birth month number (1 for Jan, 12 for Dec): ");
+    do {
+        System.out.print("Enter the birth month number (1 for Jan, 12 for Dec): ");
 
-            if (input.hasNextInt()){
-                month = input.nextInt();
-                input.nextLine();
+        if (input.hasNextInt()) {
+            month = input.nextInt();
+            input.nextLine();
 
-                if (month == -44444444) {
-                    System.out.println("Exiting from month input...");
-                    return -1;
-                }else if (month < 1 || month > 12){
-                    System.out.println(" Invalid month. Please enter a number between 1 and 12.");
-                }
-            } else {
-                System.out.println(" Invalid input. Please enter a whole number for the month.");
-                input.nextLine();
+            if (month < 1 || month > 12) {
+                System.out.println("Invalid month. Please enter a number between 1 and 12.");
             }
 
-        } while(month < 1 || month > 12);
+        } else {
+            System.out.println("Invalid input. Please enter a whole number for the month.");
+            input.nextLine(); // hatalı girişi temizler
+        }
 
-        String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"};
-        System.out.println("Selected month is " + monthNames[month] + ".");
+    } while (month < 1 || month > 12);
 
-        return month;
-    }
+    String[] monthNames = {"", "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"};
+
+    System.out.println("Selected month is " + monthNames[month] + ".");
+
+    return month;
+}
 
     /**
      * Prompts the user to enter a valid birth day even if user try to enter wrong number.
@@ -378,23 +375,22 @@ public class Main
     int day = 0;
 
     do {
-        System.out.print("Enter the day of your birthday (1-" + maxDay + ") or -44444444 to exit: ");
+        System.out.print("Enter the day of your birthday (1-" + maxDay + "): ");
 
         if (input.hasNextInt()) {
             day = input.nextInt();
             input.nextLine();
 
-            if (day == -44444444) {
-                System.out.println("Exiting from day input...");
-                return -1; // çıkış kodu
-            } else if (day < 1 || day > maxDay) {
-                System.out.println(" Invalid day. Please enter a number between 1 and "
+            if (day < 1 || day > maxDay) {
+                System.out.println("Invalid day. Please enter a number between 1 and "
                         + maxDay + " for " + monthToName(month) + ".");
             }
+
         } else {
-            System.out.println(" Invalid input. Please enter a whole number for the day.");
-            input.nextLine();
+            System.out.println("Invalid input. Please enter a whole number for the day.");
+            input.nextLine(); // hatalı girdiyi temizler
         }
+
     } while (day < 1 || day > maxDay);
 
     return day;
