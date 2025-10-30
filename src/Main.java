@@ -1,4 +1,4 @@
- import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -113,7 +113,6 @@ public class Main
     }
 
     // WELCOME SCREEN FOR PROJECT
-
     public static void showWelcomeScreen() {
         System.out.println("\n\n" +
                 "█       █▄     ▄████████  ▄█        ▄████████  ▄██████▄    ▄▄▄▄███▄▄▄▄      ▄████████ \n" +
@@ -148,29 +147,34 @@ public class Main
             // Checking for input
             switch (choice) {
                 case "A":
+                case "1":
                     System.out.println("\n-> Option A - Primary School menu is opening...");
                     subMenuOptionA(scanner);
                     break;
 
                 case "B":
+                case "2":
                     System.out.println("\n-> Option B Selected- Secondary School menu is opening...");
                     subMenuOptionB();
                     break;
 
                 case "C":
+                case "3":
                     System.out.println("\n-> Option C - High School menu is opening...");
-                    subMenuOptionC(); // Option C Menu Connection
+                    subMenuOptionC();
                     break;
 
                 case "D":
+                case "4":
                     System.out.println("\n-> Option D - University menu is opening...");
-                    connectFourGame(); // Connect Four Menu Connection
+                    connectFourGame();
                     break;
 
                 case "E":
-                    break;
-                        default:
-                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");// Programdan çıkış yapılacak, do-while dışına düşecek
+                case "5":
+                    return; // FIX: return instead of break to exit while loop
+                default:
+                    System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
                     break;
             }
         }
@@ -194,7 +198,7 @@ public class Main
 
             if (input.hasNextInt()) {
                 choice = input.nextInt();
-                input.nextLine(); // clear buffer
+                input.nextLine();
                 switch (choice) {
                     case 1:
                         System.out.println("\n Running Task A1...");
@@ -219,7 +223,6 @@ public class Main
     }
 
     // Option A Task 1: Age and Zodiac Sign Detection Main Code
-
     private static int getCurrentDay() {
         return LocalDate.now().getDayOfMonth();
     }
@@ -259,7 +262,6 @@ public class Main
     }
 
     // --- Input Methods with Validation ---
-
     private static int getYear(Scanner input) {
         int currentYear = getCurrentYear();
         int year = -1;
@@ -336,7 +338,7 @@ public class Main
 
     // Helper to get maximum days in a month (implements leap year logic)
     private static int daysInMonth(int month, int year) {
-        int maxDay; // maxDay değişkenini tanımla ve sadece switch içinde kullan
+        int maxDay;
 
         switch (month) {
             case 1: case 3: case 5: case 7: case 8: case 10: case 12:
@@ -346,7 +348,6 @@ public class Main
                 maxDay = 30;
                 break;
             case 2:
-                // Sıçrama yılı kontrolü: if-else yapısı kullanıldı.
                 if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
                     maxDay = 29;
                 } else {
@@ -354,7 +355,7 @@ public class Main
                 }
                 break;
             default:
-                maxDay = 0; // Bu durum, month input kontrolü sayesinde oluşmamalı
+                maxDay = 0;
         }
         return maxDay;
     }
@@ -398,7 +399,6 @@ public class Main
         int monthDiff = currentMonth - month;
         int dayDiff = currentDay - day;
 
-        // 1. Adjust Day Difference
         if (dayDiff < 0) {
             monthDiff--;
 
@@ -425,89 +425,88 @@ public class Main
     }
 
     // Calculate zodiac sign based on day and month
-    // İstenen: Switch içinde if-else yapısı kullanıldı
     private static void calculateZodiac(int day, int month) {
         String sign = "";
 
         switch (month) {
-            case 1: // Ocak (Jan)
+            case 1:
                 if (day <= 19) {
                     sign = "Capricorn ♑";
                 } else {
                     sign = "Aquarius ♒";
                 }
                 break;
-            case 2: // Şubat (Feb)
+            case 2:
                 if (day <= 18) {
                     sign = "Aquarius ♒";
                 } else {
                     sign = "Pisces ♓";
                 }
                 break;
-            case 3: // Mart (Mar)
+            case 3:
                 if (day <= 20) {
                     sign = "Pisces ♓";
                 } else {
                     sign = "Aries ♈";
                 }
                 break;
-            case 4: // Nisan (Apr)
+            case 4:
                 if (day <= 20) {
                     sign = "Aries ♈";
                 } else {
                     sign = "Taurus ♉";
                 }
                 break;
-            case 5: // Mayıs (May)
+            case 5:
                 if (day <= 20) {
                     sign = "Taurus ♉";
                 } else {
                     sign = "Gemini ♊";
                 }
                 break;
-            case 6: // Haziran (Jun)
+            case 6:
                 if (day <= 20) {
                     sign = "Gemini ♊";
                 } else {
                     sign = "Cancer ♋";
                 }
                 break;
-            case 7: // Temmuz (Jul)
+            case 7:
                 if (day <= 22) {
                     sign = "Cancer ♋";
                 } else {
                     sign = "Leo ♌";
                 }
                 break;
-            case 8: // Ağustos (Aug)
+            case 8:
                 if (day <= 22) {
                     sign = "Leo ♌";
                 } else {
                     sign = "Virgo ♍";
                 }
                 break;
-            case 9: // Eylül (Sep)
+            case 9:
                 if (day <= 22) {
                     sign = "Virgo ♍";
                 } else {
                     sign = "Libra ♎";
                 }
                 break;
-            case 10: // Ekim (Oct)
+            case 10:
                 if (day <= 22) {
                     sign = "Libra ♎";
                 } else {
                     sign = "Scorpio ♏";
                 }
                 break;
-            case 11: // Kasım (Nov)
+            case 11:
                 if (day <= 22) {
                     sign = "Scorpio ♏";
                 } else {
                     sign = "Sagittarius ♐";
                 }
                 break;
-            case 12: // Aralık (Dec)
+            case 12:
                 if (day <= 21) {
                     sign = "Sagittarius ♐";
                 } else {
@@ -544,13 +543,13 @@ public class Main
     }
 
     /*
-     * This function reverses the sentences except for punctuation and numbers using the recursion method.
+     * Reverses each word within a given sentence individually.
      * @author Zafer Mert Serinken
-     * @param Sentence The input string whose words are to be reversed.
-     * @return A new String with the word order reversed. Returns an empty String for null or empty inputs.
+     * @param sentence The input string containing one or more words to be processed.
+     * @return A new String where the letters of each word have been reversed.
      */
     private static String reverseSentenceRecursively(String sentence) {
-        if (sentence == null || sentence.isEmpty()) { // Base case
+        if (sentence == null || sentence.isEmpty()) {
             return "";
         }
 
@@ -562,8 +561,8 @@ public class Main
         String firstWord;
         String restOfSentence;
 
-        int firstSpaceIndex = trimmedSentence.indexOf(' '); // Divide the sentences into two parts: first word and the rest of the sentence
-        if (firstSpaceIndex == -1) { // No words left
+        int firstSpaceIndex = trimmedSentence.indexOf(' ');
+        if (firstSpaceIndex == -1) {
             firstWord = trimmedSentence;
             restOfSentence = "";
         } else {
@@ -574,7 +573,7 @@ public class Main
         String reversedWord = reverseSingleWord(firstWord);
         String processedRest = reverseSentenceRecursively(restOfSentence);
 
-        if (processedRest.isEmpty()) { // Merge results
+        if (processedRest.isEmpty()) {
             return reversedWord;
         } else {
             return reversedWord + " " + processedRest;
@@ -582,39 +581,32 @@ public class Main
     }
 
     /*
-     * Reverses the letter characters within a single word.
+     * Reverses the letter components of a single word, while leaving any
+     * non-letter characters in their original positions.
      * @author Zafer Mert Serinken
-     * @param word The single string (word) whose letters are to be reversed.
-     * @return A new String with only the letter characters reversed, or returns null if the input is null.
+     * @param word The single word string to be processed.
+     * @return A new String with only the letter parts reversed.
      */
     private static String reverseSingleWord(String word) {
-        if (word == null) return null;
-
-        StringBuilder letters = new StringBuilder();
-        for (char c : word.toCharArray()) { // Sort out the characters in the words
-            if (Character.isLetter(c)) {
-                letters.append(c);
-            }
-        }
-
-        if (letters.length() < 2) { // returns the word with only one character
+        if (word == null || word.isEmpty()) {
             return word;
         }
 
-        letters.reverse();
+        StringBuilder reversedWordBuilder = new StringBuilder();
+        StringBuilder currentPart = new StringBuilder();
 
-        // When re-forming the word, put the non-letter characters in their original places
-        StringBuilder result = new StringBuilder();
-        int letterIndex = 0;
         for (char c : word.toCharArray()) {
             if (Character.isLetter(c)) {
-                result.append(letters.charAt(letterIndex));
-                letterIndex++;
-            } else { // If the character is not a letter , insert it as is
-                result.append(c);
+                currentPart.append(c);
+            } else {
+                reversedWordBuilder.append(currentPart.reverse());
+                currentPart.setLength(0);
+                reversedWordBuilder.append(c);
             }
         }
-        return result.toString();
+        reversedWordBuilder.append(currentPart.reverse());
+
+        return reversedWordBuilder.toString();
     }
 
 
@@ -624,28 +616,37 @@ public class Main
      * Calculates primes to n by using Sieve of Eratosthenes, Sieve of Sundaram, and Sieve of Atkin algorithms.
      * Shows the execution time to compare.
      * @author Selçuk Aloba
+     * return no return because it is a void function.
      */
     public static void CalculatePrimeNumbers()
     {
         int n;
+        // safe upper limit close to overflow
+        final int MAX_PRACTICAL_LIMIT = 2_000_000_000;
 
         do {
             System.out.print("Please enter an integer n (n >= 12): ");
             if (scanner.hasNextInt())
             {
                 n = scanner.nextInt();
-                scanner.nextLine(); // buffer temizle
+                scanner.nextLine();
 
                 if (n < 12)
                 {
                     System.out.println("Input should be larger/equal to 12. Please try again.");
+                }
+                else if (n > MAX_PRACTICAL_LIMIT)
+                {
+                    System.out.println("Input value is too large and impractical to compute.");
+                    System.out.println("Please enter a value smaller than " + MAX_PRACTICAL_LIMIT);
+                    n = 0;
                 }
             }
             else
             {
                 System.out.println("Invalid input. Please enter an integer.");
                 scanner.next();
-                scanner.nextLine(); // buffer temizle
+                scanner.nextLine();
                 n = 0;
             }
         }
@@ -665,6 +666,7 @@ public class Main
      * It prints the first 3 and last 2 primes along with execution time.
      * @param n The upper limit for prime number generation.
      * @return There is no return because it is a void function
+     * @author Selçuk Aloba
      */
     public static void SieveOfEratosthenes(int n)
     {
@@ -673,13 +675,14 @@ public class Main
         Arrays.fill(isPrime, true);
         isPrime[0] = isPrime[1] = false;
 
-        for(int j=2; j*j<=n; j++)
+        for(int j=2; (long)j * j <= n; j++)
         {
             if(isPrime[j])
             {
-                for(int i = j*j; i <= n; i += j)
+                long start = (long)j * j;
+                for(long i = start; i <= n; i += j)
                 {
-                    isPrime[i]=false;
+                    isPrime[(int)i]=false;
                 }
             }
         }
@@ -692,6 +695,7 @@ public class Main
                 primeNumbers.add(i);
             }
         }
+
         long endTime = System.nanoTime();
         double duration = (endTime - startTime)/1_000_000_000.0;
         int size = primeNumbers.size();
@@ -704,11 +708,13 @@ public class Main
     }
 
     /*
-     * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
-     * It iteratively marks multiples of each prime number starting from 2 as not prime
-     * It prints the first 3 and last 2 primes along with execution time.
-     * @param n The upper limit for prime number generation.
+     * Sieve of Sundaram algorithm finds all prime numbers up to a given limit n
+     * It works by eliminating numbers 'k' of the form i + j + 2ij
+     * Numbers 'i' that are not eliminated are used to find primes using the formula 2*i + 1. (2 is added manually)
+     * It prints the first 3 and last 2 primes along with execution time
+     * @param n is the upper limit for prime number generation
      * @return There is no return because it is a void function
+     * @author Selçuk Aloba
      */
     public static void SieveOfSundaram(int n)
     {
@@ -716,13 +722,24 @@ public class Main
         int k = (n-1)/2;
 
         boolean[] isNotPrime = new boolean[k+1];
-        for (int i = 1; i <= k; i++)
+
+        for (int i = 1; i <= Math.sqrt(k); i++)
         {
-            for (int j = i; (i + j + 2 * i * j) <= k; j++)
+            int j = i;
+            while (true)
             {
-                isNotPrime[i + j + 2 * i * j] = true;
+                long indexLong = (long)i + j + 2 * (long)i * j;
+
+                if (indexLong > k)
+                {
+                    break;
+                }
+                isNotPrime[(int)indexLong] = true;
+
+                j++;
             }
         }
+
         ArrayList<Integer> primeNumbers = new ArrayList<>();
         if(n>=2)
         {
@@ -739,6 +756,7 @@ public class Main
                 }
             }
         }
+
         long endTime = System.nanoTime();
         double duration = (endTime - startTime) / 1_000_000_000.0;
         int size = primeNumbers.size();
@@ -751,59 +769,57 @@ public class Main
     }
 
     /*
-     * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
-     * It iteratively marks multiples of each prime number starting from 2 as not prime
+     * Sieve of Atkin algorithm finds all prime numbers up to a given limit n
+     * It is s an optimization that uses quadratic formulas (based on modulo 12 properties)
+     * to mark prime candidates, and then eliminates multiples of prime squares
      * It prints the first 3 and last 2 primes along with execution time.
-     * @param n The upper limit for prime number generation.
+     * @param n is the upper limit for prime number generation.
      * @return There is no return because it is a void function
+     * @author Selçuk Aloba
      */
     public static void SieveOfAtkin(int n)
     {
         long startTime = System.nanoTime();
         boolean[] sieve = new boolean[n+1];
 
-        if(n>=2)
-        {
-            sieve[2] = true;
-        }
-        if(n>=3)
-        {
-            sieve[3] = true;
-        }
+        if(n>=2) sieve[2] = true;
+        if(n>=3) sieve[3] = true;
+
         int limit = (int) Math.sqrt(n);
 
         for (int x = 1; x <= limit; x++)
         {
             for (int y = 1; y <= limit; y++)
             {
-                int num;
+                long num;
 
-                num = (4 * x * x) + (y * y);
+                num = (4 * (long)x * x) + ((long)y * y);
                 if (num <= n && (num % 12 == 1 || num % 12 == 5)) {
-                    sieve[num] = !sieve[num];
+                    sieve[(int)num] = !sieve[(int)num];
                 }
 
-                num = (3 * x * x) + (y * y);
+                num = (3 * (long)x * x) + ((long)y * y);
                 if (num <= n && (num % 12 == 7)) {
-                    sieve[num] = !sieve[num];
+                    sieve[(int)num] = !sieve[(int)num];
                 }
 
                 if (x > y) {
-                    num = (3 * x * x) - (y * y);
+                    num = (3 * (long)x * x) - ((long)y * y);
                     if (num <= n && (num % 12 == 11)) {
-                        sieve[num] = !sieve[num];
+                        sieve[(int)num] = !sieve[(int)num];
                     }
                 }
             }
         }
 
-        for (int r = 5; r * r <= n; r++)
+        for (int r = 5; (long)r * r <= n; r++)
         {
             if (sieve[r])
             {
-                for (int i = r * r; i <= n; i += r * r)
+                long increment = (long)r * r;
+                for (long i = increment; i <= n; i += increment)
                 {
-                    sieve[i] = false;
+                    sieve[(int)i] = false;
                 }
             }
         }
@@ -827,7 +843,10 @@ public class Main
         System.out.printf("Execution time(s): %.9f\n", duration);
         System.out.println(" ");
     }
+
+
     // ===========================================
+
 
     // Option B Submenu
     private static void subMenuOptionB() {
@@ -863,7 +882,9 @@ public class Main
             }
         } while (choice != 3);
     }
-    // --- Character Functions and Priority ---
+
+
+    // Option B Task 2 ===========================================
 
      /* Assigns order to operators according to their mathematical operation priorities.
       * @param operator
@@ -877,7 +898,7 @@ public class Main
     }
 
     /*
-     * Checks the 'c' if its an operator.
+     * Checks the 'c' if it's an operator.
      * @param c
      * @author Arda Dülger
      * @return true if the c is an operator '+,-,x,:' otherwise false.
@@ -887,7 +908,7 @@ public class Main
     } // It checks the valid operators.
 
     /*
-     * Checks the 'c' if its a digits.
+     * Checks the 'c' if it's a digits.
      * @param c
      * @author Arda Dülger
      * @return ture if c is a digit, otherwise false.
@@ -905,29 +926,33 @@ public class Main
      * @author Arda Dülger
      * @return boolean returns true if the expression is valid; false if it is invalid, has bad, or incomplete syntax.
      */
-    public static boolean isValidExpression (String expression){
+    public static boolean isValidExpression(String expression) {
         if (expression == null || expression.trim().isEmpty()) return false;
 
-        // Convert commas to periods and remove spaces
-        StringBuilder ns = new StringBuilder();
-        for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            if (c == ' ') {
-                continue;
-            }
-            else if (c == ',') {
-                ns.append('.'); // Insert a period instead of a comma
-            } else {
-                ns.append(c); //Add all other characters
-            }
-        }
-        String trimmed= ns.toString();
-        // Checks invalid characters
+        String trimmed = expression.trim();
+        if (trimmed.isEmpty()) return false;
+
         for (int i = 0; i < trimmed.length(); i++) {
             char c = trimmed.charAt(i);
 
+            if (c == ' ') {
+                int prevNonSpace = i - 1;
+                while (prevNonSpace >= 0 && trimmed.charAt(prevNonSpace) == ' ') {
+                    prevNonSpace--;
+                }
 
-            if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')' || c == '.')) {
+                int nextNonSpace = i + 1;
+                while (nextNonSpace < trimmed.length() && trimmed.charAt(nextNonSpace) == ' ') {
+                    nextNonSpace++;
+                }
+
+                if (prevNonSpace >= 0 && nextNonSpace < trimmed.length() &&
+                        isDigit(trimmed.charAt(prevNonSpace)) && isDigit(trimmed.charAt(nextNonSpace)))
+                {
+                    return false;
+                }
+            } else if (!(isDigit(c) || isOperator(c) || c == '(' || c == ')')) {
+
                 return false;
             }
         }
@@ -945,7 +970,6 @@ public class Main
         if (trimmed.length() > 0) {
             char firstChar = trimmed.charAt(0);
 
-
             if (firstChar == '+' || firstChar == 'x' || firstChar == ':') {
                 return false;
             }
@@ -957,11 +981,11 @@ public class Main
             }
         }
 
-        //  Operator and Operand order (Side by side operators in parentheses).
         for (int i = 0; i < trimmed.length() - 1; i++) {
             char current = trimmed.charAt(i);
             char next = trimmed.charAt(i + 1);
 
+            if (current == ' ' || next == ' ') continue;
 
             if (isOperator(current) && isOperator(next)) {
                 if (next != '-') {
@@ -974,34 +998,15 @@ public class Main
             }
 
             //  Number and parentheses control
-
             if (isDigit(current) && next == '(') return false;
             if (current == ')' && isDigit(next)) return false;
 
             //  Parentheses and operator control
-
             if (current == '(' && isOperator(next) && next != '-') {
-
                 return false;
             }
 
             if (isOperator(current) && next == ')') return false;
-
-            if (current == '.') {
-                if (i == trimmed.length() - 1 || !isDigit(next)) return false;
-                if (i > 0 && !isDigit(trimmed.charAt(i - 1))) return false;
-
-                int count = 0;
-                for (int j = 0; j <= i; j++) {
-                    if (isOperator(trimmed.charAt(j)) || trimmed.charAt(j) == '(') {
-                        count = 0;
-                    }
-                    if (trimmed.charAt(j) == '.') {
-                        count++;
-                    }
-                    if (count > 1) return false;
-                }
-            }
         }
         return true;
     }
@@ -1015,7 +1020,7 @@ public class Main
      * @param expression The mathematical expression that needs to be solved.
      * @return The final calculated result of the expression.
      */
-    public static double evaluateAndPrintSteps (String expression){
+    public static int evaluateAndPrintSteps (String expression){
         System.out.println(expression);
         return recursiveSolve(expression);
     }
@@ -1029,17 +1034,11 @@ public class Main
      * return numeric value,If the expression reduces entirely to a number, it returns that number (terminates the recursion).
      * @return recursivesolve() Sends the simplified expression back to the recursiveSolve method and returns the result of this new call.
      */
-    private static double recursiveSolve (String expression){
-
-        //Step-by-step printing logic is implemented in this method.
-
-        // Basic Condition Check: Is the expression just a number?
-        // If it's just a number, the calculation is complete, return it immediately.
+    private static int recursiveSolve (String expression){
         try {
-            return Double.parseDouble(expression);
+            return Integer.parseInt(expression);
         } catch (NumberFormatException ignored) {}
 
-        // Parentheses Handling: The logic for finding the DEEPEST parentheses is preserved.
         int balance = 0;
         int OpenParent = -1;
         int CloseParent = -1;
@@ -1064,17 +1063,14 @@ public class Main
 
         if (OpenParent != -1 && CloseParent != -1 && CloseParent > OpenParent) {
             String innerExpression = expression.substring(OpenParent + 1, CloseParent);
-            double innerResult = recursiveSolve(innerExpression);
-            String resultStr = String.format("%.2f", innerResult);
-            int endIndex = resultStr.length() - 1; //Removing unnecessary zeros from the last part.
-
-            //Skip all trailing zeros
+            int innerResult = recursiveSolve(innerExpression);
+            String resultStr = String.valueOf(innerResult);
+            int endIndex = resultStr.length() - 1;
 
             while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
                 endIndex--;
             }
 
-            //Truncate the string by length.
             resultStr = resultStr.substring(0, endIndex + 1);
             //If the string ends with a dot, remove it.
             if (resultStr.endsWith(".")) {
@@ -1112,16 +1108,15 @@ public class Main
             }
         }
 
-        //  Calculation
         if (splitIndex != -1) {
             char operator = expression.charAt(splitIndex);
             String leftPart = expression.substring(0, splitIndex);
             String rightPart = expression.substring(splitIndex + 1);
 
-            double leftValue = recursiveSolve(leftPart);
-            double rightValue = recursiveSolve(rightPart);
+            int leftValue = recursiveSolve(leftPart);
+            int rightValue = recursiveSolve(rightPart);
 
-            double result = 0;
+            int result = 0;
             if (operator == '+') result = leftValue + rightValue;
             else if (operator == '-') result = leftValue - rightValue;
             else if (operator == 'x') result = leftValue * rightValue;
@@ -1130,7 +1125,7 @@ public class Main
                 result = leftValue / rightValue;
             }
 
-            String resultStr = String.format("%.2f", result);
+            String resultStr = String.valueOf(result);
             int endIndex = resultStr.length() - 1;
 
             // It will skip the zeros at the end.
@@ -1160,7 +1155,7 @@ public class Main
         //  Final check
 
         try {
-            return Double.parseDouble(expression);
+            return Integer.parseInt(expression);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid expression; " + expression);
         }
@@ -1169,24 +1164,23 @@ public class Main
     // Main method and user login (main method in expressioncontroller)
 
     /*
-    * Its basic function is to continuously receive mathematical expressions from the user,
-    * verify them, calculate them and print the results to the screen.
-    * @author Arda Dülger
-    * @param hasn`t parameters,
-    * @return The function doesn't return any value to the caller.
+     * Its basic function is to continuously receive mathematical expressions from the user,
+     * verify them, calculate them and print the results to the screen.
+     * @author Arda Dülger
+     * @return The function doesn't return any value to the caller.
      */
     public static void expressioncontroller () {
 
         String input;
         Locale.setDefault(Locale.US);
-        System.out.println("Expression Evaluation Program: Step by Step (Type 'exit' to exit)");
+        System.out.println("Expression Evaluation Program: Step by Step (Press ENTER to return to the Secondary School Menu...)");
 
         while (true) {
             System.out.print("Enter the expression: ");
-            input = scanner.nextLine().trim();
 
-            // Exit command control
-            if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("3")) {
+            input = scanner.nextLine();
+
+            if (input.isEmpty()) {
                 System.out.println("Returning to Secondary School menu...");
                 break;
             }
@@ -1195,38 +1189,27 @@ public class Main
                 try {
                     System.out.println("\n-- Solution with step by step --\n");
 
-                    // Prepares the expression for evaluation by converting commas to periods.
-                    char[] tempChars = input.toCharArray();
-                    int newLength = 0;
-                    for (int i = 0; i < input.length(); i++) {
-                        char c = input.charAt(i);
-                        if (c == ' ') {
-                            continue;
-                        }
-                        else if (c == ',') {
-                            tempChars[newLength] = '.';
-                            newLength++;
-                        }
-                        else {
-                            tempChars[newLength] = c;
-                            newLength++;
-                        }
-                    }
-                    String processedInput = new String(tempChars,0, newLength);
+                    int finalResult = evaluateAndPrintSteps(input.trim());
+                    System.out.printf("Final result = "+ finalResult);
+                    System.out.println("\n--- END ---");
 
-                    double finalResult = evaluateAndPrintSteps(processedInput);
-                    System.out.printf("Final result = %.2f%n", finalResult);
-                    System.out.println("\n--- END(ENTER `EXIT TO RETURN MAIN MENU`  ---\n");
+                    System.out.println("\n Press ENTER for return to return to the Secondary School Menu...");
+
+                    scanner.nextLine();
+
+                    break;
+
                 } catch (IllegalArgumentException e) {
-                    System.out.println("retry to enter valid expression.`Exit`for return menu (" + e.getMessage() + ")");
+                    System.out.println("Invalid expression. (" + e.getMessage() + ")");
                 } catch (Exception e) {
-                    System.out.println("retry to enter valid expression. (Unexpected error) `Exit`for return menu");
+                    System.out.println("Invalid expression.");
                 }
             } else {
-                System.out.println("retry to enter valid expression.`Exit`for return menu");
+                System.out.println("Invalid expression.");
             }
         }
     }
+
 
     // ===========================================
     //             OPTION C - HIGH SCHOOL
@@ -1352,7 +1335,7 @@ public class Main
 
     /*
      * Calculates the Mean of the elements in a given array.
-     * @author Zafer Mert Serinken
+     * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the mean.
      * @return The calculated arithmetic mean as a double.
      */
@@ -1366,7 +1349,7 @@ public class Main
 
     /*
      * Calculates the Geometric Mean ean of the elements in a given array.
-     * @author Zafer Mert Serinken
+     * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the geometric mean.
      * @return The calculated geometric mean as a double.
      */
@@ -1380,7 +1363,7 @@ public class Main
 
     /*
      * Calculates the Harmonic Mean of the elements in a given array.
-     * @author Zafer Mert Serinken
+     * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the harmonic mean.
      * @return The calculated harmonic mean as a double.
      */
@@ -1395,7 +1378,7 @@ public class Main
 
     /*
      * Recursively calculates the sum of the reciprocals (1/x) for all elements in the specified portion of the array.
-     * @author Zafer Mert Serinken
+     * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array The array containing the double values.
      * @param n The number of elements to process, starting from the end of the array. This is the stopping condition for the recursion.
      * @return The calculated sum of the reciprocals of the first 'n' elements.
@@ -1513,7 +1496,7 @@ public class Main
         System.out.println("Array 2: " + Arrays.toString(array2));
 
         double manhattan = calculateManhattanDistance(array1, array2);
-        System.out.printf("Manhattan Distance: %.2\n", manhattan);
+        System.out.printf("Manhattan Distance: %.2f\n", manhattan);
 
         double euclidean = calculateEuclideanDistance(array1, array2);
         System.out.printf("Euclidean Distance: %.2f\n", euclidean);
@@ -1531,6 +1514,7 @@ public class Main
      * @param a First integer array.
      * @param b Second integer array.
      * @return The total Manhattan Distance as a double value.
+     * @author Selçuk Aloba and Arda Dülger
      */
     public static double calculateManhattanDistance(int[] a, int[] b)
     {
@@ -1548,6 +1532,7 @@ public class Main
      * @param a First integer array.
      * @param b Second integer array.
      * @return The Euclidean Distance as a double value.
+     * @author Selçuk Aloba and Arda Dülger
      */
     public static double calculateEuclideanDistance(int[] a, int[] b)
     {
@@ -1565,6 +1550,7 @@ public class Main
      * @param a first integer array
      * @param b second integer array
      * @return The Cosine Similarity value in range [0, 1]. Returns 0 if a or b is a zero vector.
+     * @author Selçuk Aloba and Arda Dülger
      */
     public static double calculateCosineSimilarity(int[] a, int[] b) {
         double Product = 0.0;
@@ -1586,32 +1572,29 @@ public class Main
         return Product / (valA * valB);
     }
 
+
     // ===========================================
     //             OPTION D - UNIVERSITY
     // ===========================================
-  
-    // Connect Four Game Main Code
+
+
     static char[][] C4_BOARD;
     static int C4_ROWS, C4_COLS;
     static char C4_CURRENT;
     static boolean C4_VS_AI = false;
 
-    /** Player names */
     static String C4_P1_NAME, C4_P2_NAME;
 
-    /** ANSI colors */
     static final String C4_RESET = "\u001B[0m";
-    static final String C4_RED   = "\u001B[31m";
-    static final String C4_BLUE  = "\u001B[34m";
+    static final String C4_RED = "\u001B[31m";
+    static final String C4_BLUE = "\u001B[34m";
 
-    /** Rendering config */
-    static final int    C4_CELL_W = 3;
+    static final int C4_CELL_W = 3;
     static final String C4_H = "━";
     static final String C4_V = "┃";
     static final String C4_EMPTY = " ";
-    static final String C4_DISK  = "●";
+    static final String C4_DISK = "●";
 
-    /** Visual color mapping */
     static String C4_COLOR_X = C4_RED;
     static String C4_COLOR_O = C4_BLUE;
 
@@ -1639,11 +1622,11 @@ public class Main
     }
 
     private static boolean c4SetupPVP() {
-        System.out.print("Enter name for Player 1 (X, red ●): ");
+        System.out.print("Enter name for Player 1 (Red ●): ");
         C4_P1_NAME = scanner.nextLine().trim();
         if (C4_P1_NAME.isEmpty()) C4_P1_NAME = "Player 1";
 
-        System.out.print("Enter name for Player 2 (O, blue ●): ");
+        System.out.print("Enter name for Player 2 (Blue ●): ");
         C4_P2_NAME = scanner.nextLine().trim();
         if (C4_P2_NAME.isEmpty()) C4_P2_NAME = "Player 2";
 
@@ -1680,21 +1663,22 @@ public class Main
 
     private static char c4AskColorAndAssign() {
         while (true) {
-            System.out.print("Choose your color [kirmizi/mavi]: ");
+            System.out.print("Choose your color [red/blue]: ");
             String s = scanner.nextLine().trim().toLowerCase();
 
-            if (s.equals("kirmizi") || s.equals("kırmızı") || s.equals("k")) {
+            if (s.equals("red") || s.equals("R") || s.equals("RED")||s.equals("Red")) {
                 C4_COLOR_X = C4_RED;
                 C4_COLOR_O = C4_BLUE;
                 System.out.println("You are " + C4_RED + "RED ●" + C4_RESET + " (X). Computer is " + C4_BLUE + "BLUE ●" + C4_RESET + " (O).");
                 return 'X';
-            } else if (s.equals("mavi") || s.equals("m")) {
+            } else if (s.equals("blue") || s.equals("b")||s.equals("BLUE")||s.equals("Blue")) {
                 C4_COLOR_X = C4_RED;
                 C4_COLOR_O = C4_BLUE;
                 System.out.println("You are " + C4_BLUE + "BLUE ●" + C4_RESET + " (O). Computer is " + C4_RED + "RED ●" + C4_RESET + " (X).");
                 return 'O';
             } else {
-                System.out.println("❌ Geçersiz giriş. Lütfen 'kirmizi' veya 'mavi' yaz.");
+
+                System.out.println("❌ Invalid enter. Please enter 'red' or 'blue'.");
             }
         }
     }
@@ -1709,11 +1693,23 @@ public class Main
             System.out.print("Choose: ");
             String ch = scanner.nextLine().trim();
 
-            if (ch.equals("1")) { C4_ROWS = 5; C4_COLS = 4; break; }
-            else if (ch.equals("2")) { C4_ROWS = 6; C4_COLS = 5; break; }
-            else if (ch.equals("3")) { C4_ROWS = 7; C4_COLS = 6; break; }
-            else if (ch.equals("4")) { return false; }
-            else { System.out.println("❌ Invalid input."); }
+            if (ch.equals("1")) {
+                C4_ROWS = 5;
+                C4_COLS = 4;
+                break;
+            } else if (ch.equals("2")) {
+                C4_ROWS = 6;
+                C4_COLS = 5;
+                break;
+            } else if (ch.equals("3")) {
+                C4_ROWS = 7;
+                C4_COLS = 6;
+                break;
+            } else if (ch.equals("4")) {
+                return false;
+            } else {
+                System.out.println("❌ Invalid input.");
+            }
         }
 
         C4_BOARD = new char[C4_ROWS][C4_COLS];
@@ -1849,207 +1845,141 @@ public class Main
         // Horizontal
         for (int r = 0; r < C4_ROWS; r++)
             for (int c = 0; c <= C4_COLS - 4; c++)
-                if (C4_BOARD[r][c]==p && C4_BOARD[r][c+1]==p && C4_BOARD[r][c+2]==p && C4_BOARD[r][c+3]==p)
+                if (C4_BOARD[r][c] == p && C4_BOARD[r][c + 1] == p && C4_BOARD[r][c + 2] == p && C4_BOARD[r][c + 3] == p)
                     return true;
         // Vertical
         for (int r = 0; r <= C4_ROWS - 4; r++)
             for (int c = 0; c < C4_COLS; c++)
-                if (C4_BOARD[r][c]==p && C4_BOARD[r+1][c]==p && C4_BOARD[r+2][c]==p && C4_BOARD[r+3][c]==p)
+                if (C4_BOARD[r][c] == p && C4_BOARD[r + 1][c] == p && C4_BOARD[r + 2][c] == p && C4_BOARD[r + 3][c] == p)
                     return true;
         // Diagonal ↗
         for (int r = 3; r < C4_ROWS; r++)
             for (int c = 0; c <= C4_COLS - 4; c++)
-                if (C4_BOARD[r][c]==p && C4_BOARD[r-1][c+1]==p && C4_BOARD[r-2][c+2]==p && C4_BOARD[r-3][c+3]==p)
+                if (C4_BOARD[r][c] == p && C4_BOARD[r - 1][c + 1] == p && C4_BOARD[r - 2][c + 2] == p && C4_BOARD[r - 3][c + 3] == p)
                     return true;
         // Diagonal ↘
         for (int r = 0; r <= C4_ROWS - 4; r++)
             for (int c = 0; c <= C4_COLS - 4; c++)
-                if (C4_BOARD[r][c]==p && C4_BOARD[r+1][c+1]==p && C4_BOARD[r+2][c+2]==p && C4_BOARD[r+3][c+3]==p)
+                if (C4_BOARD[r][c] == p && C4_BOARD[r + 1][c + 1] == p && C4_BOARD[r + 2][c + 2] == p && C4_BOARD[r + 3][c + 3] == p)
                     return true;
         return false;
     }
 
-    /** AI side holder */
     static char C4_AI_SIDE = 'O';
 
     private static void c4AI_setSide(char side) { C4_AI_SIDE = side; }
     private static char c4AI_getSide() { return C4_AI_SIDE; }
 
+
     private static int c4AI_bestMove(char[][] b, int rows, int cols, int depth) {
-        java.util.List<Integer> valid = c4AI_validCols(b, cols);
-        if (valid.isEmpty()) return -1;
-
-        // 1) Immediate win
-        for (int c : valid) if (c4AI_makes4(b, rows, c, C4_AI_SIDE)) return c;
-
-        // 2) Immediate block
-        char opp = (C4_AI_SIDE == 'X') ? 'O' : 'X';
-        for (int c : valid) if (c4AI_makes4(b, rows, c, opp)) return c;
-
-        // 3) Minimax light
-        int bestCol = valid.get(new java.util.Random().nextInt(valid.size()));
+        java.util.List<Integer> bestColumns = new java.util.ArrayList<>();
         int bestScore = Integer.MIN_VALUE;
-        int alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
 
-        for (int c : valid) {
-            int r = c4AI_nextRow(b, rows, c);
-            if (r == -1) continue; // FIX: Skip if column is full
+        for (int c = 0; c < cols; c++) {
+            if (b[0][c] != ' ') continue; //
+
+            int r = c4AI_findNextRow(b, rows, c);
+            if (r == -1) continue;
 
             b[r][c] = C4_AI_SIDE;
-            int score = c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, false, opp);
+
+            int score = c4AI_minimax(b, rows, cols, depth - 1, false);
+
             b[r][c] = ' ';
 
             if (score > bestScore) {
                 bestScore = score;
-                bestCol = c;
+                bestColumns.clear();
+                bestColumns.add(c);
+            } else if (score == bestScore) {
+                bestColumns.add(c);
             }
-            alpha = Math.max(alpha, bestScore);
-            if (alpha >= beta) break;
         }
-        return bestCol;
+
+        if (bestColumns.isEmpty()) return 0;
+        return bestColumns.get(new java.util.Random().nextInt(bestColumns.size()));
     }
 
-    private static int c4AI_minimax(char[][] b, int rows, int cols, int depth, int alpha, int beta, boolean max, char opp) {
-        if (depth == 0 || c4AI_terminal(b, rows, cols)) {
-            return c4AI_eval(b, rows, cols, C4_AI_SIDE);
-        }
 
-        java.util.List<Integer> valid = c4AI_validCols(b, cols);
-        if (valid.isEmpty()) return c4AI_eval(b, rows, cols, C4_AI_SIDE);
+    private static int c4AI_minimax(char[][] b, int rows, int cols, int depth, boolean isMax) {
+        char opponent = (C4_AI_SIDE == 'X') ? 'O' : 'X';
 
-        if (max) {
-            int val = Integer.MIN_VALUE;
-            for (int c : valid) {
-                int r = c4AI_nextRow(b, rows, c);
-                if (r == -1) continue; // FIX: Skip if column is full
+        if (c4AI_hasWon(b, rows, cols, C4_AI_SIDE)) return 1000 - depth;
+        if (c4AI_hasWon(b, rows, cols, opponent)) return -1000 + depth;
+
+        if (depth == 0 || c4AI_isFull(b, cols)) return 0;
+
+        if (isMax) {
+            int best = Integer.MIN_VALUE;
+            for (int c = 0; c < cols; c++) {
+                if (b[0][c] != ' ') continue;
+                int r = c4AI_findNextRow(b, rows, c);
+                if (r == -1) continue;
 
                 b[r][c] = C4_AI_SIDE;
-                val = Math.max(val, c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, false, opp));
+                int score = c4AI_minimax(b, rows, cols, depth - 1, false);
                 b[r][c] = ' ';
-                alpha = Math.max(alpha, val);
-                if (alpha >= beta) break;
+
+                best = Math.max(best, score);
             }
-            return val;
+            return best;
         } else {
-            int val = Integer.MAX_VALUE;
-            for (int c : valid) {
-                int r = c4AI_nextRow(b, rows, c);
-                if (r == -1) continue; // FIX: Skip if column is full
+            int best = Integer.MAX_VALUE;
+            for (int c = 0; c < cols; c++) {
+                if (b[0][c] != ' ') continue;
+                int r = c4AI_findNextRow(b, rows, c);
+                if (r == -1) continue;
 
-                b[r][c] = opp;
-                val = Math.min(val, c4AI_minimax(b, rows, cols, depth - 1, alpha, beta, true, opp));
+                b[r][c] = opponent;
+                int score = c4AI_minimax(b, rows, cols, depth - 1, true);
                 b[r][c] = ' ';
-                beta = Math.min(beta, val);
-                if (alpha >= beta) break;
+
+                best = Math.min(best, score);
             }
-            return val;
+            return best;
         }
     }
 
-    private static int c4AI_eval(char[][] b, int rows, int cols, char me) {
-        char you = (me == 'X') ? 'O' : 'X';
-        if (c4AI_four(b, rows, cols, me))  return 100000;
-        if (c4AI_four(b, rows, cols, you)) return -100000;
 
-        int score = 0;
-        int center = cols / 2;
-        for (int r = 0; r < rows; r++) {
-            if (b[r][center] == me) score += 5;
-        }
-
-        score += c4AI_windowSum(b, rows, cols, me);
-        score -= c4AI_windowSum(b, rows, cols, you) / 2;
-        return score;
-    }
-
-    private static int c4AI_windowSum(char[][] b, int rows, int cols, char p) {
-        int s = 0;
-        // Horizontal
-        for (int r = 0; r < rows; r++)
-            for (int c = 0; c <= cols - 4; c++)
-                s += c4AI_scoreWindow(new char[]{b[r][c], b[r][c+1], b[r][c+2], b[r][c+3]}, p);
-        // Vertical
-        for (int r = 0; r <= rows - 4; r++)
-            for (int c = 0; c < cols; c++)
-                s += c4AI_scoreWindow(new char[]{b[r][c], b[r+1][c], b[r+2][c], b[r+3][c]}, p);
-        // Diagonal ↗
-        for (int r = 3; r < rows; r++)
-            for (int c = 0; c <= cols - 4; c++)
-                s += c4AI_scoreWindow(new char[]{b[r][c], b[r-1][c+1], b[r-2][c+2], b[r-3][c+3]}, p);
-        // Diagonal ↘
-        for (int r = 0; r <= rows - 4; r++)
-            for (int c = 0; c <= cols - 4; c++)
-                s += c4AI_scoreWindow(new char[]{b[r][c], b[r+1][c+1], b[r+2][c+2], b[r+3][c+3]}, p);
-        return s;
-    }
-
-    private static int c4AI_scoreWindow(char[] w, char p) {
-        char q = (p == 'X') ? 'O' : 'X';
-        int pc=0, qc=0, emp=0;
-        for (char ch : w) {
-            if (ch == p) pc++;
-            else if (ch == q) qc++;
-            else if (ch == ' ') emp++;
-        }
-        if (pc == 4) return 10000;
-        if (pc == 3 && emp == 1) return 50;
-        if (pc == 2 && emp == 2) return 10;
-        if (qc == 3 && emp == 1) return -40;
-        return 0;
-    }
-
-    private static boolean c4AI_terminal(char[][] b, int rows, int cols) {
-        return c4AI_four(b, rows, cols, 'X') ||
-                c4AI_four(b, rows, cols, 'O') ||
-                c4AI_validCols(b, cols).isEmpty();
-    }
-
-    private static java.util.List<Integer> c4AI_validCols(char[][] b, int cols) {
-        java.util.List<Integer> res = new java.util.ArrayList<>();
-        for (int c = 0; c < cols; c++) {
-            if (b[0][c] == ' ') res.add(c);
-        }
-        return res;
-    }
-
-    private static int c4AI_nextRow(char[][] b, int rows, int c) {
-        for (int r = rows - 1; r >= 0; r--) {
-            if (b[r][c] == ' ') return r;
-        }
-        return -1;
-    }
-
-    private static boolean c4AI_makes4(char[][] b, int rows, int c, char p) {
-        int r = c4AI_nextRow(b, rows, c);
-        if (r == -1) return false;
-
-        b[r][c] = p;
-        boolean win = c4AI_four(b, rows, C4_COLS, p);
-        b[r][c] = ' ';
-        return win;
-    }
-
-    private static boolean c4AI_four(char[][] b, int rows, int cols, char p) {
-        // Horizontal
+    private static boolean c4AI_hasWon(char[][] b, int rows, int cols, char p) {
+        // Horizontical
         for (int r = 0; r < rows; r++)
             for (int c = 0; c <= cols - 4; c++)
                 if (b[r][c]==p && b[r][c+1]==p && b[r][c+2]==p && b[r][c+3]==p)
                     return true;
+
         // Vertical
         for (int r = 0; r <= rows - 4; r++)
             for (int c = 0; c < cols; c++)
                 if (b[r][c]==p && b[r+1][c]==p && b[r+2][c]==p && b[r+3][c]==p)
                     return true;
+
         // Diagonal ↗
         for (int r = 3; r < rows; r++)
             for (int c = 0; c <= cols - 4; c++)
                 if (b[r][c]==p && b[r-1][c+1]==p && b[r-2][c+2]==p && b[r-3][c+3]==p)
                     return true;
+
         // Diagonal ↘
         for (int r = 0; r <= rows - 4; r++)
             for (int c = 0; c <= cols - 4; c++)
                 if (b[r][c]==p && b[r+1][c+1]==p && b[r+2][c+2]==p && b[r+3][c+3]==p)
                     return true;
+
         return false;
+    }
+
+    private static int c4AI_findNextRow(char[][] b, int rows, int col) {
+        for (int r = rows - 1; r >= 0; r--) {
+            if (b[r][col] == ' ') return r;
+        }
+        return -1;
+    }
+
+    private static boolean c4AI_isFull(char[][] b, int cols) {
+        for (int c = 0; c < cols; c++) {
+            if (b[0][c] == ' ') return false;
+        }
+        return true;
     }
 }
