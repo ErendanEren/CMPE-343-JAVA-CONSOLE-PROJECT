@@ -26,7 +26,7 @@ public class Main
 
     static final String ANSI_GREEN_DIM    = "\u001B[32m";
     static final String ANSI_GREEN        = "\u001B[92m";
-    static final String ANSI_GREEN_BRIGHT = "\u001B[97m"; // tepedeki parlayan harf
+    static final String ANSI_GREEN_BRIGHT = "\u001B[97m"; 
 
     static final char[] MATRIX_CHARS = (
             "01" +
@@ -172,7 +172,7 @@ public class Main
 
                 case "E":
                 case "5":
-                    return; // FIX: return instead of break to exit while loop
+                    return;
                 default:
                     System.out.println("\n Invalid selection! Please choose a number between 1 and 5.\n");
                     break;
@@ -382,7 +382,7 @@ public class Main
 
         if (input.hasNextInt()) {
             day = input.nextInt();
-            input.nextLine(); // buffer temizle
+            input.nextLine();
 
             if (day == -44444444) {
                 System.out.println("Exiting from day input...");
@@ -393,7 +393,7 @@ public class Main
             }
         } else {
             System.out.println(" Invalid input. Please enter a whole number for the day.");
-            input.nextLine(); // geçersiz girdiyi temizle
+            input.nextLine();
         }
     } while (day < 1 || day > maxDay);
 
