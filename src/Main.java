@@ -319,13 +319,13 @@ public class Main
                     return -1;
                 }else if (year < 0 || year > currentYear) {
                     System.out.println("Invalid year. Please enter a year between 0 and " + currentYear + ".");
-                }
-            } else {
+                }else {
                 System.out.println("Invalid input. Please enter a whole number for the year.");
                 input.nextLine();
+                }
             }
 
-        } while (year < 1900 || year > currentYear);
+        } while (year < 0 || year > currentYear);
 
         return year;
     }
