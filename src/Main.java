@@ -1129,7 +1129,7 @@ public class Main
 
 
     // Option A Task 2: Reverse the Words Main Code
-    /*
+    /**
     * Prompts the user to enter a text and then displays the reversed version of that text.
     * @author Zafer Mert Serinken
     */
@@ -1151,7 +1151,7 @@ public class Main
         scanner.nextLine();
     }
 
-    /*
+    /**
      * Reverses each word within a given sentence individually.
      * @author Zafer Mert Serinken
      * @param sentence The input string containing one or more words to be processed.
@@ -1189,7 +1189,7 @@ public class Main
         }
     }
 
-    /*
+    /**
      * Reverses the letter components of a single word, while leaving any
      * non-letter characters in their original positions.
      * @author Zafer Mert Serinken
@@ -1220,7 +1220,7 @@ public class Main
 
 
     // ===========================================
-    /*
+    /**
      * Function takes an integer that equal/larger than 12 from the user.
      * Calculates primes to n by using Sieve of Eratosthenes, Sieve of Sundaram, and Sieve of Atkin algorithms.
      * Shows the execution time to compare.
@@ -1269,7 +1269,7 @@ public class Main
         scanner.nextLine();
     }
 
-    /*
+    /**
      * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
      * It iteratively marks multiples of each prime number starting from 2 as not prime
      * It prints the first 3 and last 2 primes along with execution time.
@@ -1316,7 +1316,7 @@ public class Main
         System.out.println(" ");
     }
 
-    /*
+    /**
      * Sieve of Sundaram algorithm finds all prime numbers up to a given limit n
      * It works by eliminating numbers 'k' of the form i + j + 2ij
      * Numbers 'i' that are not eliminated are used to find primes using the formula 2*i + 1. (2 is added manually)
@@ -1377,7 +1377,7 @@ public class Main
         System.out.println(" ");
     }
 
-    /*
+    /**
      * Sieve of Atkin algorithm finds all prime numbers up to a given limit n
      * It is s an optimization that uses quadratic formulas (based on modulo 12 properties)
      * to mark prime candidates, and then eliminates multiples of prime squares
@@ -1503,7 +1503,7 @@ public class Main
 
     // Option B Task 2 ===========================================
 
-     /* Assigns order to operators according to their mathematical operation priorities.
+     /** Assigns order to operators according to their mathematical operation priorities.
       * @param operator
       * @author Arda Dülger
       * return 0 has no priority, 1 has low priority, 2 has the most priority.
@@ -1514,7 +1514,7 @@ public class Main
         return 0;  //Other characters return 0.
     }
 
-    /*
+    /**
      * Checks the 'c' if it's an operator.
      * @param c
      * @author Arda Dülger
@@ -1524,7 +1524,7 @@ public class Main
         return c == '+' || c == '-' || c == 'x' || c == ':';
     } // It checks the valid operators.
 
-    /*
+    /**
      * Checks the 'c' if it's a digits.
      * @param c
      * @author Arda Dülger
@@ -1536,7 +1536,7 @@ public class Main
 
     // --- Check Validation ---
 
-    /*
+    /**
      * Checks if a mathematical expression follows rules such as spaces, invalid characters,
      * incorrect use of parentheses, incorrect operator/operand order, and incorrect decimal number format.
      * @param expression A user-entered mathematical expression string to be checked for validity.
@@ -1630,7 +1630,7 @@ public class Main
 
     // --- Evaluation ---
 
-    /*
+    /**
      * It prints the original expression as is,
      * then passes the expression to the recursiveSolve method to start the actual calculation and returns its result.
      * @author Arda Dülger
@@ -1642,7 +1642,7 @@ public class Main
         return recursiveSolve(expression);
     }
 
-    /*
+    /**
      * The goal is to reduce the given string expression to a single numerical value by applying the rules of
      * mathematical order of operations (first parentheses, then multiplication/division, last addition/subtraction).
      * @author Arda Dülger
@@ -1796,7 +1796,7 @@ public class Main
 
     // Main method and user login (main method in expressioncontroller)
 
-    /*
+    /**
      * Its basic function is to continuously receive mathematical expressions from the user,
      * verify them, calculate them and print the results to the screen.
      * @author Arda Dülger
@@ -1893,7 +1893,7 @@ public class Main
     }
 
     // Option C Task 1: Array Statistics Main Code
-    /*
+    /**
      * Prompts the user to define an array, validates the size and elements,
      * calculates various statistical measures (Median, Arithmetic, Geometric, and Harmonic Means),
      * and prints the formatted results to the console.
@@ -1954,7 +1954,7 @@ public class Main
         scanner.nextLine();
     }
 
-    /*
+    /**
      * Calculates the statistical median of a given array of double values
      * @author Zafer Mert Serinken
      * @param array The array of double values used for calculating the median.
@@ -1975,7 +1975,7 @@ public class Main
         }
     }
 
-    /*
+    /**
      * Calculates the Mean of the elements in a given array.
      * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the mean.
@@ -1989,7 +1989,7 @@ public class Main
         return sum / array.length;
     }
 
-    /*
+    /**
      * Calculates the Geometric Mean ean of the elements in a given array.
      * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the geometric mean.
@@ -2003,7 +2003,7 @@ public class Main
         return Math.pow(product, 1.0 / array.length);
     }
 
-    /*
+    /**
      * Calculates the Harmonic Mean of the elements in a given array.
      * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array Values of the array used for calculating the harmonic mean.
@@ -2018,7 +2018,7 @@ public class Main
         return array.length / sumOfReciprocals;
     }
 
-    /*
+    /**
      * Recursively calculates the sum of the reciprocals (1/x) for all elements in the specified portion of the array.
      * @author Zafer Mert Serinken and Eren Çakır Bircan
      * @param array The array containing the double values.
@@ -2036,7 +2036,7 @@ public class Main
 
     // Option C Task C2: Distance Between Two Arrays Main Code
 
-    /*
+    /**
      * Function allows the user to input two integer arrays of equal size (elements should be in the interval 0–9)
      * It calculates Manhattan Distance, Euclidean Distance, and Cosine Similarity
      * It gives user input, performs calculations, and displays formatted results.
@@ -2150,7 +2150,7 @@ public class Main
         scanner.nextLine();
     }
 
-    /*
+    /**
      * Calculates the Manhattan Distance between two arrays.
      * Formula: |a1 - b1| + |a2 - b2| + ... + |an - bn|
      * @param a First integer array.
@@ -2168,7 +2168,7 @@ public class Main
         return sum;
     }
 
-    /*
+    /**
      * Calculates the Euclidean Distance between two arrays.
      * Formula: √((a1 - b1)² + (a2 - b2)² + ... + (an - bn)²)
      * @param a First integer array.
@@ -2185,7 +2185,7 @@ public class Main
         return Math.sqrt(sumOfSquares);
     }
 
-    /*
+    /**
      * It calculates the Cosine Similarity between two arrays.
      * Formula: (A · B) / (|A| × |B|)
      * It shows how similar the two arrays are in direction (not magnitude).
