@@ -1789,7 +1789,6 @@ public class Main {
      * Its basic function is to continuously receive mathematical expressions from the user,
      * verify them, calculate them and print the results to the screen.
      * @author Arda Dülger
-     * @return The function doesn't return any value to the caller.
      */
     public static void expressioncontroller () {
 
