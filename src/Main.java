@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Main
-{
+public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args)
@@ -231,10 +230,8 @@ public class Main
     //           OPTION A - PRIMARY SCHOOL
     // ===========================================
 
-    /*
-        Option A Task 1 -  Age and Zodiac Sign Detection
-    */
-
+    // Option A Task 1 -  Age and Zodiac Sign Detection
+    
     /**
      * Shows the submenu for Option A (Primary School).
      * Lets the user choose between:
@@ -1273,8 +1270,8 @@ public class Main
      * Sieve of Eratosthenes algorithm finds all prime numbers up to a given limit n.
      * It iteratively marks multiples of each prime number starting from 2 as not prime
      * It prints the first 3 and last 2 primes along with execution time.
+     *
      * @param n The upper limit for prime number generation.
-     * @return There is no return because it is a void function
      * @author Selçuk Aloba
      */
     public static void SieveOfEratosthenes(int n)
@@ -1321,8 +1318,8 @@ public class Main
      * It works by eliminating numbers 'k' of the form i + j + 2ij
      * Numbers 'i' that are not eliminated are used to find primes using the formula 2*i + 1. (2 is added manually)
      * It prints the first 3 and last 2 primes along with execution time
+     *
      * @param n is the upper limit for prime number generation
-     * @return There is no return because it is a void function
      * @author Selçuk Aloba
      */
     public static void SieveOfSundaram(int n)
@@ -1382,8 +1379,8 @@ public class Main
      * It is s an optimization that uses quadratic formulas (based on modulo 12 properties)
      * to mark prime candidates, and then eliminates multiples of prime squares
      * It prints the first 3 and last 2 primes along with execution time.
+     *
      * @param n is the upper limit for prime number generation.
-     * @return There is no return because it is a void function
      * @author Selçuk Aloba
      */
     public static void SieveOfAtkin(int n)
@@ -1574,7 +1571,7 @@ public class Main
             }
         }
 
-        // Parentheses control
+
         int balance = 0;
         for (char c : trimmed.toCharArray()) {
             if (c == '(') balance++;
@@ -1591,7 +1588,7 @@ public class Main
                 return false;
             }
 
-            // The end of the expression cannot be an operator
+
             char lastChar = trimmed.charAt(trimmed.length() - 1);
             if (isOperator(lastChar)) {
                 return false;
@@ -1619,16 +1616,16 @@ public class Main
             if (current == ')' && isDigit(next)) return false;
 
             //  Parentheses and operator control
-            if (current == '(' && isOperator(next) && next != '-') {
+            if (current == ')' &&  next == '(') {
                 return false;
             }
 
-            if (isOperator(current) && next == ')') return false;
+            if (current== '(' && isOperator(next) && next != '-') return false;
         }
         return true;
     }
 
-    // --- Evaluation ---
+
 
     /**
      * It prints the original expression as is,
@@ -1652,9 +1649,12 @@ public class Main
      * @return recursivesolve() Sends the simplified expression back to the recursiveSolve method and returns the result of this new call.
      */
     private static int recursiveSolve (String expression){
+        expression= expression.replaceAll(" ", "");
         try {
+
             return Integer.parseInt(expression);
         } catch (NumberFormatException ignored) {}
+
 
         int balance = 0;
         int OpenParent = -1;
@@ -1678,34 +1678,30 @@ public class Main
             }
         }
 
+
         if (OpenParent != -1 && CloseParent != -1 && CloseParent > OpenParent) {
             String innerExpression = expression.substring(OpenParent + 1, CloseParent);
             int innerResult = recursiveSolve(innerExpression);
+
+
             String resultStr = String.valueOf(innerResult);
-            int endIndex = resultStr.length() - 1;
 
-            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
-                endIndex--;
-            }
 
-            resultStr = resultStr.substring(0, endIndex + 1);
-            //If the string ends with a dot, remove it.
-            if (resultStr.endsWith(".")) {
-                resultStr = resultStr.substring(0, resultStr.length() - 1);
-            }
 
             String newExpression = expression.substring(0, OpenParent) + resultStr + expression.substring(CloseParent + 1);
 
             System.out.println("= " + newExpression);
-
             return recursiveSolve(newExpression);
         }
 
+
         int splitIndex = -1;
+
 
         for (int i = expression.length() - 1; i >= 0; i--) {
             char c = expression.charAt(i);
             if (isOperator(c) && takePriority(c) == 1) {
+
                 if (c == '-' && (i == 0 || expression.charAt(i - 1) == '(' || isOperator(expression.charAt(i - 1)))) {
                     continue;
                 }
@@ -1714,7 +1710,7 @@ public class Main
             }
         }
 
-        // If addition/subtraction is not found, search for multiplication/division (Rightmost)
+
         if (splitIndex == -1) {
             for (int i = expression.length() - 1; i >= 0; i--) {
                 char c = expression.charAt(i);
@@ -1731,8 +1727,10 @@ public class Main
             String leftPart = expression.substring(0, splitIndex);
             String rightPart = expression.substring(splitIndex + 1);
 
+
             int leftValue = recursiveSolve(leftPart);
             int rightValue = recursiveSolve(rightPart);
+
 
             int result = 0;
             try {
@@ -1761,14 +1759,6 @@ public class Main
             
             int endIndex = resultStr.length() - 1;
 
-            // It will skip the zeros at the end.
-            while (endIndex > 0 && resultStr.charAt(endIndex) == '0') {
-                endIndex--;
-            }
-            resultStr = resultStr.substring(0, endIndex + 1);
-            if (resultStr.endsWith(".")) {
-                resultStr = resultStr.substring(0, resultStr.length() - 1);
-            }
 
             if (expression.equals(leftPart + operator + rightPart)) {
 
@@ -1776,16 +1766,15 @@ public class Main
                 return recursiveSolve(resultStr);
             }
 
-            String newExpression = resultStr;
 
-            // To show step
+            String newExpression = resultStr;
             System.out.println("= " + newExpression);
 
-            // Recursion to solve new expression.
+
             return recursiveSolve(newExpression);
+
         }
 
-        //  Final check
 
         try {
             return Integer.parseInt(expression);
@@ -1842,7 +1831,6 @@ public class Main
             }
         }
     }
-
 
     // ===========================================
     //             OPTION C - HIGH SCHOOL
