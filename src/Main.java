@@ -1678,6 +1678,7 @@ public class Main
             }
         }
 
+        //  Calculation
         if (splitIndex != -1) {
             char operator = expression.charAt(splitIndex);
             String leftPart = expression.substring(0, splitIndex);
@@ -1687,15 +1688,30 @@ public class Main
             int rightValue = recursiveSolve(rightPart);
 
             int result = 0;
-            if (operator == '+') result = leftValue + rightValue;
-            else if (operator == '-') result = leftValue - rightValue;
-            else if (operator == 'x') result = leftValue * rightValue;
-            else if (operator == ':') {
-                if (rightValue == 0) throw new IllegalArgumentException("Error for division by zero");
-                result = leftValue / rightValue;
+            try {
+                if (operator == '+') {
+                    result = Math.addExact(leftValue, rightValue);
+                } else if (operator == '-') {
+                    result = Math.subtractExact(leftValue, rightValue);
+                } else if (operator == 'x') {
+                    result = Math.multiplyExact(leftValue, rightValue);
+                } else if (operator == ':') {
+                    if (rightValue == 0) {
+                        throw new ArithmeticException("Error for division by zero");
+                    }
+                    result = leftValue / rightValue;
+                }
+            } catch (ArithmeticException e) {
+                if (e.getMessage().equals("integer overflow")) {
+                    throw new ArithmeticException("Calculation overflow (limit exceeded)");
+                }
+
+                throw e;
             }
 
+
             String resultStr = String.valueOf(result);
+            
             int endIndex = resultStr.length() - 1;
 
             // It will skip the zeros at the end.
@@ -1769,7 +1785,7 @@ public class Main
 
                     break;
 
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | ArithmeticException e) {
                     System.out.println("Invalid expression. (" + e.getMessage() + ")");
                 } catch (Exception e) {
                     System.out.println("Invalid expression.");
