@@ -230,10 +230,8 @@ public class Main {
     //           OPTION A - PRIMARY SCHOOL
     // ===========================================
 
-    /*
-        Option A Task 1 -  Age and Zodiac Sign Detection
-    */
-
+    // Option A Task 1 -  Age and Zodiac Sign Detection
+    
     /**
      * Shows the submenu for Option A (Primary School).
      * Lets the user choose between:
@@ -1573,7 +1571,7 @@ public class Main {
             }
         }
 
-        // Parentheses control
+
         int balance = 0;
         for (char c : trimmed.toCharArray()) {
             if (c == '(') balance++;
@@ -1590,7 +1588,7 @@ public class Main {
                 return false;
             }
 
-            // The end of the expression cannot be an operator
+
             char lastChar = trimmed.charAt(trimmed.length() - 1);
             if (isOperator(lastChar)) {
                 return false;
@@ -1618,14 +1616,15 @@ public class Main {
             if (current == ')' && isDigit(next)) return false;
 
             //  Parentheses and operator control
-            if (current == '(' && isOperator(next) && next != '-') {
+            if (current == ')' &&  next == '(') {
                 return false;
             }
 
-            if (isOperator(current) && next == ')') return false;
+            if (current== '(' && isOperator(next) && next != '-') return false;
         }
         return true;
     }
+
 
 
     /**
@@ -1780,7 +1779,7 @@ public class Main {
 
     // Main method and user login (main method in expressioncontroller)
 
-    /*
+    /**
      * Its basic function is to continuously receive mathematical expressions from the user,
      * verify them, calculate them and print the results to the screen.
      * @author Arda Dülger
