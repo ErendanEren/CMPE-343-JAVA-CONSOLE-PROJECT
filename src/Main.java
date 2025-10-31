@@ -1721,7 +1721,7 @@ public class Main {
             }
         }
 
-
+        //  Calculation
         if (splitIndex != -1) {
             char operator = expression.charAt(splitIndex);
             String leftPart = expression.substring(0, splitIndex);
@@ -1734,24 +1734,30 @@ public class Main {
 
             int result = 0;
             try {
-                if (operator == '+') result = Math.addExact(leftValue, rightValue);
-                else if (operator == '-') result = Math.subtractExact(leftValue, rightValue);
-                else if (operator == 'x') result = Math.multiplyExact(leftValue, rightValue);
-                else if (operator == ':') {
-                    if (rightValue == 0) throw new IllegalArgumentException("Error for division by zero");
-
-                    if (leftValue == Integer.MIN_VALUE && rightValue == -1) {
-
-                        throw new ArithmeticException("Overflow detected");
+                if (operator == '+') {
+                    result = Math.addExact(leftValue, rightValue);
+                } else if (operator == '-') {
+                    result = Math.subtractExact(leftValue, rightValue);
+                } else if (operator == 'x') {
+                    result = Math.multiplyExact(leftValue, rightValue);
+                } else if (operator == ':') {
+                    if (rightValue == 0) {
+                        throw new ArithmeticException("Error for division by zero");
                     }
                     result = leftValue / rightValue;
                 }
-            }catch(ArithmeticException e){
-                throw new IllegalArgumentException("Arithmetic overflow/underflow detected.");
+            } catch (ArithmeticException e) {
+                if (e.getMessage().equals("integer overflow")) {
+                    throw new ArithmeticException("Calculation overflow (limit exceeded)");
+                }
+
+                throw e;
             }
 
 
             String resultStr = String.valueOf(result);
+            
+            int endIndex = resultStr.length() - 1;
 
 
             if (expression.equals(leftPart + operator + rightPart)) {
@@ -1815,7 +1821,7 @@ public class Main {
 
                     break;
 
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | ArithmeticException e) {
                     System.out.println("Invalid expression. (" + e.getMessage() + ")");
                 } catch (Exception e) {
                     System.out.println("Invalid expression.");
