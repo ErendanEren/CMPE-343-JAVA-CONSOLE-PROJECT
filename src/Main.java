@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Group9
+public class Main
 {
     static Scanner scanner = new Scanner(System.in);
 
